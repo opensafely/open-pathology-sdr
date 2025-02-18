@@ -1,3 +1,28 @@
 {
-  "files": {}
+  "files": {
+    "opensafely-alanine-aminotransferase-alt-tests.csv": {
+      "id": "opensafely/alanine-aminotransferase-alt-tests/2298df3e",
+      "url": "https://www.opencodelists.org/codelist/opensafely/alanine-aminotransferase-alt-tests/2298df3e/",
+      "downloaded_at": "2025-02-18 10:12:06.111109Z",
+      "sha": "0d231653e5ece343f6945309d21fc40c7f685ff2"
+    },
+    "opensafely-cholesterol-tests.csv": {
+      "id": "opensafely/cholesterol-tests/62eb0940",
+      "url": "https://www.opencodelists.org/codelist/opensafely/cholesterol-tests/62eb0940/",
+      "downloaded_at": "2025-02-18 10:12:06.256688Z",
+      "sha": "e5f9e7e0b44c18830aea207f001d015153a56b8e"
+    },
+    "opensafely-red-blood-cell-rbc-tests.csv": {
+      "id": "opensafely/red-blood-cell-rbc-tests/17bcafa1",
+      "url": "https://www.opencodelists.org/codelist/opensafely/red-blood-cell-rbc-tests/17bcafa1/",
+      "downloaded_at": "2025-02-18 10:12:06.420481Z",
+      "sha": "e111693c2b9ae4e688d859daa73491a978b0795b"
+    },
+    "opensafely-glycated-haemoglobin-hba1c-tests.csv": {
+      "id": "opensafely/glycated-haemoglobin-hba1c-tests/30cc22d6",
+      "url": "https://www.opencodelists.org/codelist/opensafely/glycated-haemoglobin-hba1c-tests/30cc22d6/",
+      "downloaded_at": "2025-02-18 10:12:06.559242Z",
+      "sha": "fb9a968b5644c14c570bf2b8708381600f4bd1f5"
+    }
+  }
 }
