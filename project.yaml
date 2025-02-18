@@ -1,8 +1,59 @@
-version: '4.0'
+version: "4.0"
 
 actions:
-  generate_dataset:
-    run: ehrql:v1 generate-dataset analysis/dataset_definition.py --output output/dataset.csv.gz
+  generate_measures_alt:
+    run: >
+      ehrql:v1 generate-measures
+        analysis/measure_definition.py
+        --output output/measures_alt.csv
+        --
+        --codelist codelists/opensafely-alanine-aminotransferase-alt-tests.csv
+    outputs:
+      moderately_sensitive:
+        measures: output/measures_alt.csv
+
+  generate_measures_chol:
+    run: >
+      ehrql:v1 generate-measures
+        analysis/measure_definition.py
+        --output output/measures_chol.csv
+        --
+        --codelist codelists/opensafely-cholesterol-tests.csv
+    outputs:
+      moderately_sensitive:
+        measures: output/measures_chol.csv
+
+  generate_measures_hba1c:
+    run: >
+      ehrql:v1 generate-measures
+        analysis/measure_definition.py
+        --output output/measures_hba1c.csv
+        --
+        --codelist codelists/opensafely-glycated-haemoglobin-hba1c-tests.csv
+    outputs:
+      moderately_sensitive:
+        measures: output/measures_hba1c.csv
+
+  generate_measures_rbc:
+    run: >
+      ehrql:v1 generate-measures
+        analysis/measure_definition.py
+        --output output/measures_rbc.csv
+        --
+        --codelist codelists/opensafely-red-blood-cell-rbc-tests.csv
+    outputs:
+      moderately_sensitive:
+        measures: output/measures_rbc.csv
+
+  # Runs test to ensure correctness of measures queries
+  generate_test_dataset:
+    run: >
+      ehrql:v1 generate-dataset
+        analysis/dataset_definition.py
+        --output output/test_dataset.csv
+        --test-data-file analysis/test_dataset_definition.py
+        --
+        --codelist codelists/opensafely-alanine-aminotransferase-alt-tests.csv
     outputs:
       highly_sensitive:
-        dataset: output/dataset.csv.gz
+        dataset: output/test_dataset.csv
