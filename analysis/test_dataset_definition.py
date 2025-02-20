@@ -4,18 +4,31 @@ from analysis.dataset_definition import dataset  # noqa: F401
 
 test_data = {
     1: {
-        "clinical_events": [
+        "clinical_events_ranges": [
             {
-                "numeric_value": 7,
+                "numeric_value": 30,
                 "snomedct_code": "1013211000000103",
                 "date": date(2020, 4, 1),
+                "lower_bound": 23,
+                "upper_bound": 76,
+                "comparator": "<",
             },
-            {"snomedct_code": "1013211000000103", "date": date(2020, 4, 1)},
+            {
+                "numeric_value": 30,
+                "snomedct_code": "1013211000000103",
+                "date": date(2020, 4, 1),
+                "lower_bound": 23,
+                "upper_bound": 76,
+                "comparator": "~",
+            },
         ],
-        "patients": {},
+        "patients": {"sex": "male"},
         "practice_registrations": {},
         "expected_in_population": True,
-        "expected_columns": {"codelist_event_count": 2, "test_value_count": 1},
+        "expected_columns": {
+            "valT_equalF_diffT_uppT_lowT": 1,
+            "valT_equalT_diffF_uppT_lowT": 1,
+        },
     }
 }
 
