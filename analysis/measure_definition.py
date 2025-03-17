@@ -27,42 +27,36 @@ has_differential_comparator = ranges.comparator.is_not_null() & ~has_equality_co
 has_upper_bound = ranges.upper_bound.is_not_null()
 has_lower_bound = ranges.lower_bound.is_not_null()
 
-# Generate all combinations of test_value, equality_comparator, differential_comparator, upper_bound, and lower_bound
-# E.g. valT_equalT_diffF_uppT_lowF
-count_measures = dict()
-for value in [True, False]:
-    # Use zip to exclude equal_compT, diff_compT (since both can't be true)
-    for equal_comp, diff_comp in zip([True, False, False], [False, True, False]):
-        for upper in [True, False]:
-            for lower in [True, False]:
-                key = f"val{'T' if value else 'F'}_equal{'T' if equal_comp else 'F'}_diff{'T' if diff_comp else 'F'}_upp{'T' if upper else 'F'}_low{'T' if lower else 'F'}"
-                count_measures[key] = codelist_events.where(
-                    (has_test_value if value else ~has_test_value)
-                    & (
-                        has_equality_comparator
-                        if equal_comp
-                        else ~has_equality_comparator
-                    )
-                    & (
-                        has_differential_comparator
-                        if diff_comp
-                        else ~has_differential_comparator
-                    )
-                    & (has_upper_bound if upper else ~has_upper_bound)
-                    & (has_lower_bound if lower else ~has_lower_bound)
-                ).count_for_patient()
+# Create filtered table for each query
+count_measures = {}
+count_measures['has_test_value'] = codelist_events.where(
+    has_test_value
+)
+count_measures['has_equality_comparator'] = codelist_events.where(
+    has_equality_comparator
+)
+count_measures['has_differential_comparator'] = codelist_events.where(
+    has_differential_comparator
+)
+count_measures['has_upper_bound'] = codelist_events.where(
+    has_lower_bound
+)
+count_measures['has_lower_bound'] = codelist_events.where(
+    has_upper_bound
+)
+
 # Measures
 # --------------------------------------------------------------------------------------
 measures = Measures()
 measures.configure_dummy_data(population_size=1000, legacy=True)
 measures.define_defaults(
     denominator=codelist_event_count,
-    intervals=years(7).starting_on(index_date),
+    intervals=years(1).starting_on(index_date),
     group_by={"region": region},
 )
 
-for m, numerator in count_measures.items():
+for measure, table in count_measures.items():
     measures.define_measure(
-        name=m,
-        numerator=numerator,
+        name=measure,
+        numerator=table.count_for_patient(),
     )
