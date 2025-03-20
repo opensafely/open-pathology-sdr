@@ -1,60 +1,307 @@
-version: "4.0"
+
+version: '4.0'
 
 actions:
-  generate_measures_alt:
+
+  generate_measures_alt_has_test_value:
     run: >
       ehrql:v1 generate-measures
         analysis/measure_definition.py
-        --output output/measures_alt.csv
+        --output output/measures_alt_has_test_value.csv
         --
         --codelist codelists/opensafely-alanine-aminotransferase-alt-tests.csv
+        --measure has_test_value
     outputs:
       moderately_sensitive:
-        measures: output/measures_alt.csv
+        measures: output/measures_alt_has_test_value.csv
 
-  generate_measures_chol:
+  generate_measures_alt_has_equality_comparator:
     run: >
       ehrql:v1 generate-measures
         analysis/measure_definition.py
-        --output output/measures_chol.csv
+        --output output/measures_alt_has_equality_comparator.csv
+        --
+        --codelist codelists/opensafely-alanine-aminotransferase-alt-tests.csv
+        --measure has_equality_comparator
+    outputs:
+      moderately_sensitive:
+        measures: output/measures_alt_has_equality_comparator.csv
+
+  generate_measures_alt_has_differential_comparator:
+    run: >
+      ehrql:v1 generate-measures
+        analysis/measure_definition.py
+        --output output/measures_alt_has_differential_comparator.csv
+        --
+        --codelist codelists/opensafely-alanine-aminotransferase-alt-tests.csv
+        --measure has_differential_comparator
+    outputs:
+      moderately_sensitive:
+        measures: output/measures_alt_has_differential_comparator.csv
+
+  generate_measures_alt_has_lower_bound:
+    run: >
+      ehrql:v1 generate-measures
+        analysis/measure_definition.py
+        --output output/measures_alt_has_lower_bound.csv
+        --
+        --codelist codelists/opensafely-alanine-aminotransferase-alt-tests.csv
+        --measure has_lower_bound
+    outputs:
+      moderately_sensitive:
+        measures: output/measures_alt_has_lower_bound.csv
+
+  generate_measures_alt_has_upper_bound:
+    run: >
+      ehrql:v1 generate-measures
+        analysis/measure_definition.py
+        --output output/measures_alt_has_upper_bound.csv
+        --
+        --codelist codelists/opensafely-alanine-aminotransferase-alt-tests.csv
+        --measure has_upper_bound
+    outputs:
+      moderately_sensitive:
+        measures: output/measures_alt_has_upper_bound.csv
+
+  generate_measures_chol_has_test_value:
+    run: >
+      ehrql:v1 generate-measures
+        analysis/measure_definition.py
+        --output output/measures_chol_has_test_value.csv
         --
         --codelist codelists/opensafely-cholesterol-tests.csv
+        --measure has_test_value
     outputs:
       moderately_sensitive:
-        measures: output/measures_chol.csv
+        measures: output/measures_chol_has_test_value.csv
 
-  generate_measures_hba1c:
+  generate_measures_chol_has_equality_comparator:
     run: >
       ehrql:v1 generate-measures
         analysis/measure_definition.py
-        --output output/measures_hba1c.csv
+        --output output/measures_chol_has_equality_comparator.csv
+        --
+        --codelist codelists/opensafely-cholesterol-tests.csv
+        --measure has_equality_comparator
+    outputs:
+      moderately_sensitive:
+        measures: output/measures_chol_has_equality_comparator.csv
+
+  generate_measures_chol_has_differential_comparator:
+    run: >
+      ehrql:v1 generate-measures
+        analysis/measure_definition.py
+        --output output/measures_chol_has_differential_comparator.csv
+        --
+        --codelist codelists/opensafely-cholesterol-tests.csv
+        --measure has_differential_comparator
+    outputs:
+      moderately_sensitive:
+        measures: output/measures_chol_has_differential_comparator.csv
+
+  generate_measures_chol_has_lower_bound:
+    run: >
+      ehrql:v1 generate-measures
+        analysis/measure_definition.py
+        --output output/measures_chol_has_lower_bound.csv
+        --
+        --codelist codelists/opensafely-cholesterol-tests.csv
+        --measure has_lower_bound
+    outputs:
+      moderately_sensitive:
+        measures: output/measures_chol_has_lower_bound.csv
+
+  generate_measures_chol_has_upper_bound:
+    run: >
+      ehrql:v1 generate-measures
+        analysis/measure_definition.py
+        --output output/measures_chol_has_upper_bound.csv
+        --
+        --codelist codelists/opensafely-cholesterol-tests.csv
+        --measure has_upper_bound
+    outputs:
+      moderately_sensitive:
+        measures: output/measures_chol_has_upper_bound.csv
+
+  generate_measures_hba1c_has_test_value:
+    run: >
+      ehrql:v1 generate-measures
+        analysis/measure_definition.py
+        --output output/measures_hba1c_has_test_value.csv
         --
         --codelist codelists/opensafely-glycated-haemoglobin-hba1c-tests.csv
+        --measure has_test_value
     outputs:
       moderately_sensitive:
-        measures: output/measures_hba1c.csv
+        measures: output/measures_hba1c_has_test_value.csv
 
-  generate_measures_rbc:
+  generate_measures_hba1c_has_equality_comparator:
     run: >
       ehrql:v1 generate-measures
         analysis/measure_definition.py
-        --output output/measures_rbc.csv
+        --output output/measures_hba1c_has_equality_comparator.csv
+        --
+        --codelist codelists/opensafely-glycated-haemoglobin-hba1c-tests.csv
+        --measure has_equality_comparator
+    outputs:
+      moderately_sensitive:
+        measures: output/measures_hba1c_has_equality_comparator.csv
+
+  generate_measures_hba1c_has_differential_comparator:
+    run: >
+      ehrql:v1 generate-measures
+        analysis/measure_definition.py
+        --output output/measures_hba1c_has_differential_comparator.csv
+        --
+        --codelist codelists/opensafely-glycated-haemoglobin-hba1c-tests.csv
+        --measure has_differential_comparator
+    outputs:
+      moderately_sensitive:
+        measures: output/measures_hba1c_has_differential_comparator.csv
+
+  generate_measures_hba1c_has_lower_bound:
+    run: >
+      ehrql:v1 generate-measures
+        analysis/measure_definition.py
+        --output output/measures_hba1c_has_lower_bound.csv
+        --
+        --codelist codelists/opensafely-glycated-haemoglobin-hba1c-tests.csv
+        --measure has_lower_bound
+    outputs:
+      moderately_sensitive:
+        measures: output/measures_hba1c_has_lower_bound.csv
+
+  generate_measures_hba1c_has_upper_bound:
+    run: >
+      ehrql:v1 generate-measures
+        analysis/measure_definition.py
+        --output output/measures_hba1c_has_upper_bound.csv
+        --
+        --codelist codelists/opensafely-glycated-haemoglobin-hba1c-tests.csv
+        --measure has_upper_bound
+    outputs:
+      moderately_sensitive:
+        measures: output/measures_hba1c_has_upper_bound.csv
+
+  generate_measures_rbc_has_test_value:
+    run: >
+      ehrql:v1 generate-measures
+        analysis/measure_definition.py
+        --output output/measures_rbc_has_test_value.csv
         --
         --codelist codelists/opensafely-red-blood-cell-rbc-tests.csv
+        --measure has_test_value
     outputs:
       moderately_sensitive:
-        measures: output/measures_rbc.csv
+        measures: output/measures_rbc_has_test_value.csv
 
-  generate_measures_sodium:
+  generate_measures_rbc_has_equality_comparator:
     run: >
       ehrql:v1 generate-measures
         analysis/measure_definition.py
-        --output output/measures_sodium.csv
+        --output output/measures_rbc_has_equality_comparator.csv
         --
-        --codelist codelists/opensafely-sodium-tests-numerical-value.csv
+        --codelist codelists/opensafely-red-blood-cell-rbc-tests.csv
+        --measure has_equality_comparator
     outputs:
       moderately_sensitive:
-        measures: output/measures_sodium.csv
+        measures: output/measures_rbc_has_equality_comparator.csv
+
+  generate_measures_rbc_has_differential_comparator:
+    run: >
+      ehrql:v1 generate-measures
+        analysis/measure_definition.py
+        --output output/measures_rbc_has_differential_comparator.csv
+        --
+        --codelist codelists/opensafely-red-blood-cell-rbc-tests.csv
+        --measure has_differential_comparator
+    outputs:
+      moderately_sensitive:
+        measures: output/measures_rbc_has_differential_comparator.csv
+
+  generate_measures_rbc_has_lower_bound:
+    run: >
+      ehrql:v1 generate-measures
+        analysis/measure_definition.py
+        --output output/measures_rbc_has_lower_bound.csv
+        --
+        --codelist codelists/opensafely-red-blood-cell-rbc-tests.csv
+        --measure has_lower_bound
+    outputs:
+      moderately_sensitive:
+        measures: output/measures_rbc_has_lower_bound.csv
+
+  generate_measures_rbc_has_upper_bound:
+    run: >
+      ehrql:v1 generate-measures
+        analysis/measure_definition.py
+        --output output/measures_rbc_has_upper_bound.csv
+        --
+        --codelist codelists/opensafely-red-blood-cell-rbc-tests.csv
+        --measure has_upper_bound
+    outputs:
+      moderately_sensitive:
+        measures: output/measures_rbc_has_upper_bound.csv
+
+  generate_measures_sodium_has_test_value:
+    run: >
+      ehrql:v1 generate-measures
+        analysis/measure_definition.py
+        --output output/measures_sodium_has_test_value.csv
+        --
+        --codelist codelists/opensafely-sodium-tests-numerical-value.csv
+        --measure has_test_value
+    outputs:
+      moderately_sensitive:
+        measures: output/measures_sodium_has_test_value.csv
+
+  generate_measures_sodium_has_equality_comparator:
+    run: >
+      ehrql:v1 generate-measures
+        analysis/measure_definition.py
+        --output output/measures_sodium_has_equality_comparator.csv
+        --
+        --codelist codelists/opensafely-sodium-tests-numerical-value.csv
+        --measure has_equality_comparator
+    outputs:
+      moderately_sensitive:
+        measures: output/measures_sodium_has_equality_comparator.csv
+
+  generate_measures_sodium_has_differential_comparator:
+    run: >
+      ehrql:v1 generate-measures
+        analysis/measure_definition.py
+        --output output/measures_sodium_has_differential_comparator.csv
+        --
+        --codelist codelists/opensafely-sodium-tests-numerical-value.csv
+        --measure has_differential_comparator
+    outputs:
+      moderately_sensitive:
+        measures: output/measures_sodium_has_differential_comparator.csv
+
+  generate_measures_sodium_has_lower_bound:
+    run: >
+      ehrql:v1 generate-measures
+        analysis/measure_definition.py
+        --output output/measures_sodium_has_lower_bound.csv
+        --
+        --codelist codelists/opensafely-sodium-tests-numerical-value.csv
+        --measure has_lower_bound
+    outputs:
+      moderately_sensitive:
+        measures: output/measures_sodium_has_lower_bound.csv
+
+  generate_measures_sodium_has_upper_bound:
+    run: >
+      ehrql:v1 generate-measures
+        analysis/measure_definition.py
+        --output output/measures_sodium_has_upper_bound.csv
+        --
+        --codelist codelists/opensafely-sodium-tests-numerical-value.csv
+        --measure has_upper_bound
+    outputs:
+      moderately_sensitive:
+        measures: output/measures_sodium_has_upper_bound.csv
 
   # Runs test to ensure correctness of measures queries
   generate_test_dataset:
