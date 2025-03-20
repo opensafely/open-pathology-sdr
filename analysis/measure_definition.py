@@ -5,11 +5,13 @@ from ehrql.tables.tpp import practice_registrations as registrations
 
 parser = argparse.ArgumentParser()
 parser.add_argument("--codelist")
+parser.add_argument("--measure", type=str)
 args = parser.parse_args()
 index_date = "2018-01-01"
 
 # Codelists
 codelist = codelist_from_csv(args.codelist, column="code")
+# Filter to codelist events during interval
 codelist_events = ranges.where(
     ranges.snomedct_code.is_in(codelist) & ranges.date.is_during(INTERVAL)
 )
@@ -20,30 +22,20 @@ region = registrations.for_patient_on(INTERVAL.start_date).practice_nuts1_region
 # Presence of codelist (denominator)
 codelist_event_count = codelist_events.count_for_patient()
 
-# Booleans
-has_test_value = ranges.numeric_value.is_not_null()
-has_equality_comparator = ranges.comparator.is_in(["=", "~"])
-has_differential_comparator = ranges.comparator.is_not_null() & ~has_equality_comparator
-has_upper_bound = ranges.upper_bound.is_not_null()
-has_lower_bound = ranges.lower_bound.is_not_null()
+# Booleans testing for presence of each field in clinical_events_ranges
+if args.measure == 'has_test_value':
+    query = ranges.numeric_value.is_not_null()
+elif args.measure == 'has_equality_comparator':
+    query = ranges.comparator.is_in(["=", "~"])
+elif args.measure == 'has_differential_comparator':
+    query = (ranges.comparator.is_not_null()) & ~ (ranges.comparator.is_in(["=", "~"]))
+elif args.measure == 'has_lower_bound':
+    query = ranges.upper_bound.is_not_null()
+elif args.measure == 'has_upper_bound':
+    query = ranges.lower_bound.is_not_null()
 
-# Create filtered table for each query
-count_measures = {}
-count_measures['has_test_value'] = codelist_events.where(
-    has_test_value
-)
-count_measures['has_equality_comparator'] = codelist_events.where(
-    has_equality_comparator
-)
-count_measures['has_differential_comparator'] = codelist_events.where(
-    has_differential_comparator
-)
-count_measures['has_upper_bound'] = codelist_events.where(
-    has_lower_bound
-)
-count_measures['has_lower_bound'] = codelist_events.where(
-    has_upper_bound
-)
+# Create filtered table query
+count = codelist_events.where(query).count_for_patient()
 
 # Measures
 # --------------------------------------------------------------------------------------
@@ -55,8 +47,7 @@ measures.define_defaults(
     group_by={"region": region},
 )
 
-for measure, table in count_measures.items():
-    measures.define_measure(
-        name=measure,
-        numerator=table.count_for_patient(),
-    )
+measures.define_measure(
+    name=args.measure,
+    numerator=count,
+)
