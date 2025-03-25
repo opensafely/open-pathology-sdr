@@ -43,7 +43,7 @@ measures = Measures()
 measures.configure_dummy_data(population_size=1000, legacy=True)
 measures.define_defaults(
     denominator=codelist_event_count,
-    intervals=years(1).starting_on(index_date),
+    intervals=years(7).starting_on(index_date),
     group_by={"region": region},
 )
 
