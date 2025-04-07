@@ -1,6 +1,6 @@
 import argparse
 from ehrql import INTERVAL, Measures, codelist_from_csv, years
-from ehrql.tables.tpp import clinical_events_ranges as ranges
+from ehrql.tables.tpp import clinical_events_ranges as ranges, clinical_events
 from ehrql.tables.tpp import practice_registrations as registrations
 
 parser = argparse.ArgumentParser()
@@ -24,7 +24,11 @@ codelist_event_count = codelist_events.count_for_patient()
 
 # Booleans testing for presence of each field in clinical_events_ranges
 if args.measure == 'has_test_value':
-    query = ranges.numeric_value.is_not_null()
+    query = clinical_events.numeric_value.is_not_null()
+    # Use clinical_events instead of clinical_events_ranges for codelist_events
+    codelist_events = clinical_events.where(
+        clinical_events.snomedct_code.is_in(codelist) & clinical_events.date.is_during(INTERVAL)
+    )
 elif args.measure == 'has_equality_comparator':
     query = ranges.comparator.is_in(["=", "~"])
 elif args.measure == 'has_differential_comparator':
