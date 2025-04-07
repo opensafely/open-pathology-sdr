@@ -37,7 +37,25 @@ yaml_template = """
         measures: output/measures_{test}_{measure}.csv
 """
 
-yaml_body = ""
+yaml_body = """
+  generate_numeric_value_dataset:
+    run: >
+      ehrql:v1 generate-dataset
+        analysis/numeric_value_dataset_definition.py
+        --output output/numeric_value_dataset.csv
+        --
+        --codelist codelists/opensafely-alanine-aminotransferase-alt-tests.csv
+    outputs:
+      highly_sensitive:
+        dataset: output/numeric_value_dataset.csv
+  generate_numeric_value_histogram:
+    run: >
+      r:latest analysis/histogram.r --codelist codelists/opensafely-alanine-aminotransferase-alt-tests.csv
+    needs: [generate_numeric_value_dataset]
+    outputs:
+      moderately_sensitive:
+        dataset: output/alt_numeric_values.png
+"""
 needs = {}
 codelists = {'alt': 'codelists/opensafely-alanine-aminotransferase-alt-tests.csv',
              'chol': 'codelists/opensafely-cholesterol-tests.csv',

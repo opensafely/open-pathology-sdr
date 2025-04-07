@@ -3,6 +3,24 @@ version: '4.0'
 
 actions:
 
+  generate_numeric_value_dataset:
+    run: >
+      ehrql:v1 generate-dataset
+        analysis/numeric_value_dataset_definition.py
+        --output output/numeric_value_dataset.csv
+        --
+        --codelist codelists/opensafely-alanine-aminotransferase-alt-tests.csv
+    outputs:
+      highly_sensitive:
+        dataset: output/numeric_value_dataset.csv
+  generate_numeric_value_histogram:
+    run: >
+      r:latest analysis/histogram.r --codelist codelists/opensafely-alanine-aminotransferase-alt-tests.csv
+    needs: [generate_numeric_value_dataset]
+    outputs:
+      moderately_sensitive:
+        dataset: output/alt_numeric_values.png
+
   generate_measures_alt_has_test_value:
     run: >
       ehrql:v1 generate-measures
