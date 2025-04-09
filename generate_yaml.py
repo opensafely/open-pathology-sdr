@@ -55,7 +55,7 @@ yaml_body = """
     outputs:
       moderately_sensitive:
         pic: output/alt_numeric_values.png
-        pic: output/alt_numeric_values_zoomed.png
+        pic2: output/alt_numeric_values_zoomed.png
         dataset: output/top_1000_numeric_values.csv
 """
 needs = {}
