@@ -54,7 +54,9 @@ yaml_body = """
     needs: [generate_numeric_value_dataset]
     outputs:
       moderately_sensitive:
-        dataset: output/alt_numeric_values.png
+        pic: output/alt_numeric_values.png
+        pic: output/alt_numeric_values_zoomed.png
+        dataset: output/top_1000_numeric_values.csv
 """
 needs = {}
 codelists = {'alt': 'codelists/opensafely-alanine-aminotransferase-alt-tests.csv',
