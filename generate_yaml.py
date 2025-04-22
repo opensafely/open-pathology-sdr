@@ -63,6 +63,13 @@ yaml_body = """
       moderately_sensitive:
         pic: output/alt_numeric_values.png
         pic2: output/alt_numeric_values_zoomed.png
+  generate_numeric_value_summary:
+    run: >
+      python:latest analysis/proxy_null_analysis/summary_stats.py
+    needs: [generate_numeric_value_dataset]
+    outputs:
+      moderately_sensitive:
+        table: output/numeric_value_summary.csv
 """
 needs = {}
 codelists = {'alt': 'codelists/opensafely-alanine-aminotransferase-alt-tests.csv',
