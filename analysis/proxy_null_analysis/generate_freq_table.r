@@ -22,6 +22,8 @@ top_1000 <- freq_table %>%
   slice_head(n = 1000)
 # Apply midpoint 6 rounding
 top_1000$count <- roundmid_any(top_1000$count)
+# Replace values between 1 and 7 with "[REDACT]"
+top_1000$count[top_1000$count >= 1 & top_1000$count <= 7] <- "[REDACT]"
 top_1000 <- rename(top_1000, count_midpoint6 = count)
 
 write.csv(top_1000, "output/top_1000_numeric_values.csv", row.names = FALSE)
