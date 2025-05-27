@@ -14,7 +14,7 @@ test_data = {
                 "comparator": "<",
             },
             {
-                "numeric_value": 30,
+                "numeric_value": 0,
                 "snomedct_code": "1013211000000103",
                 "date": date(2020, 4, 1),
                 "lower_bound": 23,
@@ -22,12 +22,12 @@ test_data = {
                 "comparator": "~",
             },
         ],
-        "patients": {"sex": "male"},
-        "practice_registrations": {},
+        "patients": {
+
+        },
         "expected_in_population": True,
         "expected_columns": {
-            "valT_equalF_diffT_uppT_lowT": 1,
-            "valT_equalT_diffF_uppT_lowT": 1,
+            "has_test_value": 1,
         },
     }
 }
