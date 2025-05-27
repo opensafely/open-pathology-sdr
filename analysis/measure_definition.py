@@ -24,7 +24,8 @@ codelist_event_count = codelist_events.count_for_patient()
 
 # Booleans testing for presence of each field in clinical_events_ranges
 if args.measure == 'has_test_value':
-    query = clinical_events.numeric_value.is_not_null()
+    # Dont consider null and 0's as completed tests
+    query = ((clinical_events.numeric_value.is_not_null()) & (clinical_events.numeric_value != 0))
     # Use clinical_events instead of clinical_events_ranges for codelist_events
     codelist_events = clinical_events.where(
         clinical_events.snomedct_code.is_in(codelist) & clinical_events.date.is_during(INTERVAL)
@@ -44,7 +45,7 @@ count = codelist_events.where(query).count_for_patient()
 # Measures
 # --------------------------------------------------------------------------------------
 measures = Measures()
-measures.configure_dummy_data(population_size=1000, legacy=True)
+measures.configure_dummy_data(population_size=1000, legacy=False)
 measures.define_defaults(
     denominator=codelist_event_count,
     intervals=years(7).starting_on(index_date),
