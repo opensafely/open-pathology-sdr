@@ -27,11 +27,10 @@ actions:
     run: >
       r:latest analysis/proxy_null_analysis/generate_histogram.r 
       --codelist codelists/opensafely-alanine-aminotransferase-alt-tests.csv
-    needs: [generate_numeric_value_table_alt]
     outputs:
       moderately_sensitive:
-        pic: output/alt/proxy_null/numeric_values_alt.png
-        pic2: output/alt/proxy_null/numeric_values_zoomed_alt.png
+        pic: output/output/alt/proxy_null/numeric_values_alt.png
+        pic2: output/output/alt/proxy_null/numeric_values_zoomed_alt.png
   #generate_numeric_value_summary_alt:
   #  run: >
   #    python:latest analysis/proxy_null_analysis/summary_stats.py
@@ -124,11 +123,10 @@ actions:
     run: >
       r:latest analysis/proxy_null_analysis/generate_histogram.r 
       --codelist codelists/opensafely-cholesterol-tests.csv
-    needs: [generate_numeric_value_table_chol]
     outputs:
       moderately_sensitive:
-        pic: output/chol/proxy_null/numeric_values_chol.png
-        pic2: output/chol/proxy_null/numeric_values_zoomed_chol.png
+        pic: output/output/chol/proxy_null/numeric_values_chol.png
+        pic2: output/output/chol/proxy_null/numeric_values_zoomed_chol.png
   #generate_numeric_value_summary_chol:
   #  run: >
   #    python:latest analysis/proxy_null_analysis/summary_stats.py
@@ -221,11 +219,10 @@ actions:
     run: >
       r:latest analysis/proxy_null_analysis/generate_histogram.r 
       --codelist codelists/opensafely-glycated-haemoglobin-hba1c-tests.csv
-    needs: [generate_numeric_value_table_hba1c]
     outputs:
       moderately_sensitive:
-        pic: output/hba1c/proxy_null/numeric_values_hba1c.png
-        pic2: output/hba1c/proxy_null/numeric_values_zoomed_hba1c.png
+        pic: output/output/hba1c/proxy_null/numeric_values_hba1c.png
+        pic2: output/output/hba1c/proxy_null/numeric_values_zoomed_hba1c.png
   #generate_numeric_value_summary_hba1c:
   #  run: >
   #    python:latest analysis/proxy_null_analysis/summary_stats.py
@@ -318,11 +315,10 @@ actions:
     run: >
       r:latest analysis/proxy_null_analysis/generate_histogram.r 
       --codelist codelists/opensafely-red-blood-cell-rbc-tests.csv
-    needs: [generate_numeric_value_table_rbc]
     outputs:
       moderately_sensitive:
-        pic: output/rbc/proxy_null/numeric_values_rbc.png
-        pic2: output/rbc/proxy_null/numeric_values_zoomed_rbc.png
+        pic: output/output/rbc/proxy_null/numeric_values_rbc.png
+        pic2: output/output/rbc/proxy_null/numeric_values_zoomed_rbc.png
   #generate_numeric_value_summary_rbc:
   #  run: >
   #    python:latest analysis/proxy_null_analysis/summary_stats.py
@@ -415,11 +411,10 @@ actions:
     run: >
       r:latest analysis/proxy_null_analysis/generate_histogram.r 
       --codelist codelists/opensafely-sodium-tests-numerical-value.csv
-    needs: [generate_numeric_value_table_sodium]
     outputs:
       moderately_sensitive:
-        pic: output/sodium/proxy_null/numeric_values_sodium.png
-        pic2: output/sodium/proxy_null/numeric_values_zoomed_sodium.png
+        pic: output/output/sodium/proxy_null/numeric_values_sodium.png
+        pic2: output/output/sodium/proxy_null/numeric_values_zoomed_sodium.png
   #generate_numeric_value_summary_sodium:
   #  run: >
   #    python:latest analysis/proxy_null_analysis/summary_stats.py

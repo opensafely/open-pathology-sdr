@@ -22,7 +22,7 @@ if (opt$test_run){
   # Show first few values
   print(head(top_1000))
 } else {
-  top_1000 <- read.csv(glue('output/{test}/proxy_null/top_1000_numeric_values_{test}.csv'))
+  top_1000 <- read.csv(glue('output/output/{test}/proxy_null/top_1000_numeric_values_{test}.csv'))
 }
 
 # Round floats to nearest integer (i.e. binning)
@@ -59,6 +59,6 @@ pp <- ggplot(aggregated_top_1000, aes(x = value, y = total_count_midpoint6_deriv
        x = "numeric_value", 
        y = "Count")
 
-ggsave(glue("output/{test}/proxy_null/numeric_values_{test}.png"), plot = p)
-ggsave(glue("output/{test}/proxy_null/numeric_values_zoomed_{test}.png"), plot = pp)
+ggsave(glue("output/output/{test}/proxy_null/numeric_values_{test}.png"), plot = p)
+ggsave(glue("output/output/{test}/proxy_null/numeric_values_zoomed_{test}.png"), plot = pp)
  

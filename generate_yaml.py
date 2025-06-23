@@ -62,11 +62,10 @@ yaml_body_template = """
     run: >
       r:latest analysis/proxy_null_analysis/generate_histogram.r 
       --codelist {path}
-    needs: [generate_numeric_value_table_{test}]
     outputs:
       moderately_sensitive:
-        pic: output/{test}/proxy_null/numeric_values_{test}.png
-        pic2: output/{test}/proxy_null/numeric_values_zoomed_{test}.png
+        pic: output/output/{test}/proxy_null/numeric_values_{test}.png
+        pic2: output/output/{test}/proxy_null/numeric_values_zoomed_{test}.png
   #generate_numeric_value_summary_{test}:
   #  run: >
   #    python:latest analysis/proxy_null_analysis/summary_stats.py
