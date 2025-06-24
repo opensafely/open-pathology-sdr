@@ -82,7 +82,8 @@ codelists = {'alt': 'codelists/opensafely-alanine-aminotransferase-alt-tests.csv
              'chol': 'codelists/opensafely-cholesterol-tests.csv',
              'hba1c': 'codelists/opensafely-glycated-haemoglobin-hba1c-tests.csv', 
              'rbc': 'codelists/opensafely-red-blood-cell-rbc-tests.csv', 
-             'sodium': 'codelists/opensafely-sodium-tests-numerical-value.csv'}
+             'sodium': 'codelists/opensafely-sodium-tests-numerical-value.csv',
+             'hba1c_numeric': 'codelists/opensafely-glycated-haemoglobin-hba1c-tests-numerical-value.csv'}
 measures = ['has_test_value', 'has_equality_comparator', 'has_differential_comparator',
             'has_lower_bound', 'has_upper_bound']
 

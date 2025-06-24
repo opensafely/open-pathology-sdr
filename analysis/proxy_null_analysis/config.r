@@ -19,8 +19,9 @@ if (is.null(opt$codelist)) {
     test <- 'rbc'
 } else if (opt$codelist == 'codelists/opensafely-sodium-tests-numerical-value.csv') {
     test <- 'sodium'
+} else if (opt$codelist == 'codelists/opensafely-glycated-haemoglobin-hba1c-tests-numerical-value.csv') {
+    test <- 'hba1c_numeric'
 }
-
 if (opt$test_run){
     test <- 'alt'
 }

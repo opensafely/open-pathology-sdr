@@ -488,6 +488,103 @@ actions:
       moderately_sensitive:
         measures: output/measures_sodium_has_upper_bound.csv
 
+# ----------------- Test: hba1c_numeric ---------------------------------
+
+  generate_numeric_value_dataset_hba1c_numeric:
+    run: >
+      ehrql:v1 generate-dataset
+        analysis/proxy_null_analysis/numeric_value_dataset_definition.py
+        --output output/hba1c_numeric/proxy_null/numeric_value_dataset_hba1c_numeric.csv
+        --
+        --codelist codelists/opensafely-glycated-haemoglobin-hba1c-tests-numerical-value.csv
+    outputs:
+      highly_sensitive:
+        dataset: output/hba1c_numeric/proxy_null/numeric_value_dataset_hba1c_numeric.csv
+  generate_numeric_value_table_hba1c_numeric:
+    run: >
+      r:latest analysis/proxy_null_analysis/generate_freq_table.r 
+      --codelist codelists/opensafely-glycated-haemoglobin-hba1c-tests-numerical-value.csv
+    needs: [generate_numeric_value_dataset_hba1c_numeric]
+    outputs:
+      moderately_sensitive:
+        dataset: output/hba1c_numeric/proxy_null/top_1000_numeric_values_hba1c_numeric.csv
+  generate_numeric_value_histogram_hba1c_numeric:
+    run: >
+      r:latest analysis/proxy_null_analysis/generate_histogram.r 
+      --codelist codelists/opensafely-glycated-haemoglobin-hba1c-tests-numerical-value.csv
+    needs: [generate_numeric_value_table_hba1c_numeric]
+    outputs:
+      moderately_sensitive:
+        pic: output/hba1c_numeric/proxy_null/numeric_values_hba1c_numeric.png
+        pic2: output/hba1c_numeric/proxy_null/numeric_values_zoomed_hba1c_numeric.png
+  #generate_numeric_value_summary_hba1c_numeric:
+  #  run: >
+  #    python:latest analysis/proxy_null_analysis/summary_stats.py
+  #  needs: [generate_numeric_value_dataset_hba1c_numeric]
+  #  outputs:
+  #    moderately_sensitive:
+  #      table: output/hba1c_numeric/proxy_null/numeric_value_summary_hba1c_numeric.csv
+
+  generate_measures_hba1c_numeric_has_test_value:
+    run: >
+      ehrql:v1 generate-measures
+        analysis/measure_definition.py
+        --output output/measures_hba1c_numeric_has_test_value.csv
+        --
+        --codelist codelists/opensafely-glycated-haemoglobin-hba1c-tests-numerical-value.csv
+        --measure has_test_value
+    outputs:
+      moderately_sensitive:
+        measures: output/measures_hba1c_numeric_has_test_value.csv
+
+  generate_measures_hba1c_numeric_has_equality_comparator:
+    run: >
+      ehrql:v1 generate-measures
+        analysis/measure_definition.py
+        --output output/measures_hba1c_numeric_has_equality_comparator.csv
+        --
+        --codelist codelists/opensafely-glycated-haemoglobin-hba1c-tests-numerical-value.csv
+        --measure has_equality_comparator
+    outputs:
+      moderately_sensitive:
+        measures: output/measures_hba1c_numeric_has_equality_comparator.csv
+
+  generate_measures_hba1c_numeric_has_differential_comparator:
+    run: >
+      ehrql:v1 generate-measures
+        analysis/measure_definition.py
+        --output output/measures_hba1c_numeric_has_differential_comparator.csv
+        --
+        --codelist codelists/opensafely-glycated-haemoglobin-hba1c-tests-numerical-value.csv
+        --measure has_differential_comparator
+    outputs:
+      moderately_sensitive:
+        measures: output/measures_hba1c_numeric_has_differential_comparator.csv
+
+  generate_measures_hba1c_numeric_has_lower_bound:
+    run: >
+      ehrql:v1 generate-measures
+        analysis/measure_definition.py
+        --output output/measures_hba1c_numeric_has_lower_bound.csv
+        --
+        --codelist codelists/opensafely-glycated-haemoglobin-hba1c-tests-numerical-value.csv
+        --measure has_lower_bound
+    outputs:
+      moderately_sensitive:
+        measures: output/measures_hba1c_numeric_has_lower_bound.csv
+
+  generate_measures_hba1c_numeric_has_upper_bound:
+    run: >
+      ehrql:v1 generate-measures
+        analysis/measure_definition.py
+        --output output/measures_hba1c_numeric_has_upper_bound.csv
+        --
+        --codelist codelists/opensafely-glycated-haemoglobin-hba1c-tests-numerical-value.csv
+        --measure has_upper_bound
+    outputs:
+      moderately_sensitive:
+        measures: output/measures_hba1c_numeric_has_upper_bound.csv
+
   # Runs test to ensure correctness of measures queries
   generate_test_dataset:
     run: >
