@@ -3,3 +3,4 @@ opensafely/cholesterol-tests/62eb0940/
 opensafely/red-blood-cell-rbc-tests/17bcafa1/
 opensafely/glycated-haemoglobin-hba1c-tests/30cc22d6/
 opensafely/sodium-tests-numerical-value/1f50a646/
+opensafely/glycated-haemoglobin-hba1c-tests-numerical-value/5134e926/
