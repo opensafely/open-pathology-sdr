@@ -4,3 +4,6 @@ opensafely/red-blood-cell-rbc-tests/17bcafa1/
 opensafely/glycated-haemoglobin-hba1c-tests/30cc22d6/
 opensafely/sodium-tests-numerical-value/1f50a646/
 opensafely/glycated-haemoglobin-hba1c-tests-numerical-value/5134e926/
+ardens/vitamin-d-level/2020-11-06/
+opensafely/psa-numeric-value/2258a288/
+opensafely/alanine-aminotransferase-alt-tests-numerical-value/78d4a307/

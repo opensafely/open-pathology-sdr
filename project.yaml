@@ -585,6 +585,297 @@ actions:
       moderately_sensitive:
         measures: output/measures_hba1c_numeric_has_upper_bound.csv
 
+# ----------------- Test: vitd ---------------------------------
+
+  generate_numeric_value_dataset_vitd:
+    run: >
+      ehrql:v1 generate-dataset
+        analysis/proxy_null_analysis/numeric_value_dataset_definition.py
+        --output output/vitd/proxy_null/numeric_value_dataset_vitd.csv
+        --
+        --codelist codelists/ardens-vitamin-d-level.csv
+    outputs:
+      highly_sensitive:
+        dataset: output/vitd/proxy_null/numeric_value_dataset_vitd.csv
+  generate_numeric_value_table_vitd:
+    run: >
+      r:latest analysis/proxy_null_analysis/generate_freq_table.r 
+      --codelist codelists/ardens-vitamin-d-level.csv
+    needs: [generate_numeric_value_dataset_vitd]
+    outputs:
+      moderately_sensitive:
+        dataset: output/vitd/proxy_null/top_1000_numeric_values_vitd.csv
+  generate_numeric_value_histogram_vitd:
+    run: >
+      r:latest analysis/proxy_null_analysis/generate_histogram.r 
+      --codelist codelists/ardens-vitamin-d-level.csv
+    needs: [generate_numeric_value_table_vitd]
+    outputs:
+      moderately_sensitive:
+        pic: output/vitd/proxy_null/numeric_values_vitd.png
+        pic2: output/vitd/proxy_null/numeric_values_zoomed_vitd.png
+  #generate_numeric_value_summary_vitd:
+  #  run: >
+  #    python:latest analysis/proxy_null_analysis/summary_stats.py
+  #  needs: [generate_numeric_value_dataset_vitd]
+  #  outputs:
+  #    moderately_sensitive:
+  #      table: output/vitd/proxy_null/numeric_value_summary_vitd.csv
+
+  generate_measures_vitd_has_test_value:
+    run: >
+      ehrql:v1 generate-measures
+        analysis/measure_definition.py
+        --output output/measures_vitd_has_test_value.csv
+        --
+        --codelist codelists/ardens-vitamin-d-level.csv
+        --measure has_test_value
+    outputs:
+      moderately_sensitive:
+        measures: output/measures_vitd_has_test_value.csv
+
+  generate_measures_vitd_has_equality_comparator:
+    run: >
+      ehrql:v1 generate-measures
+        analysis/measure_definition.py
+        --output output/measures_vitd_has_equality_comparator.csv
+        --
+        --codelist codelists/ardens-vitamin-d-level.csv
+        --measure has_equality_comparator
+    outputs:
+      moderately_sensitive:
+        measures: output/measures_vitd_has_equality_comparator.csv
+
+  generate_measures_vitd_has_differential_comparator:
+    run: >
+      ehrql:v1 generate-measures
+        analysis/measure_definition.py
+        --output output/measures_vitd_has_differential_comparator.csv
+        --
+        --codelist codelists/ardens-vitamin-d-level.csv
+        --measure has_differential_comparator
+    outputs:
+      moderately_sensitive:
+        measures: output/measures_vitd_has_differential_comparator.csv
+
+  generate_measures_vitd_has_lower_bound:
+    run: >
+      ehrql:v1 generate-measures
+        analysis/measure_definition.py
+        --output output/measures_vitd_has_lower_bound.csv
+        --
+        --codelist codelists/ardens-vitamin-d-level.csv
+        --measure has_lower_bound
+    outputs:
+      moderately_sensitive:
+        measures: output/measures_vitd_has_lower_bound.csv
+
+  generate_measures_vitd_has_upper_bound:
+    run: >
+      ehrql:v1 generate-measures
+        analysis/measure_definition.py
+        --output output/measures_vitd_has_upper_bound.csv
+        --
+        --codelist codelists/ardens-vitamin-d-level.csv
+        --measure has_upper_bound
+    outputs:
+      moderately_sensitive:
+        measures: output/measures_vitd_has_upper_bound.csv
+
+# ----------------- Test: psa ---------------------------------
+
+  generate_numeric_value_dataset_psa:
+    run: >
+      ehrql:v1 generate-dataset
+        analysis/proxy_null_analysis/numeric_value_dataset_definition.py
+        --output output/psa/proxy_null/numeric_value_dataset_psa.csv
+        --
+        --codelist codelists/opensafely-psa-numeric-value.csv
+    outputs:
+      highly_sensitive:
+        dataset: output/psa/proxy_null/numeric_value_dataset_psa.csv
+  generate_numeric_value_table_psa:
+    run: >
+      r:latest analysis/proxy_null_analysis/generate_freq_table.r 
+      --codelist codelists/opensafely-psa-numeric-value.csv
+    needs: [generate_numeric_value_dataset_psa]
+    outputs:
+      moderately_sensitive:
+        dataset: output/psa/proxy_null/top_1000_numeric_values_psa.csv
+  generate_numeric_value_histogram_psa:
+    run: >
+      r:latest analysis/proxy_null_analysis/generate_histogram.r 
+      --codelist codelists/opensafely-psa-numeric-value.csv
+    needs: [generate_numeric_value_table_psa]
+    outputs:
+      moderately_sensitive:
+        pic: output/psa/proxy_null/numeric_values_psa.png
+        pic2: output/psa/proxy_null/numeric_values_zoomed_psa.png
+  #generate_numeric_value_summary_psa:
+  #  run: >
+  #    python:latest analysis/proxy_null_analysis/summary_stats.py
+  #  needs: [generate_numeric_value_dataset_psa]
+  #  outputs:
+  #    moderately_sensitive:
+  #      table: output/psa/proxy_null/numeric_value_summary_psa.csv
+
+  generate_measures_psa_has_test_value:
+    run: >
+      ehrql:v1 generate-measures
+        analysis/measure_definition.py
+        --output output/measures_psa_has_test_value.csv
+        --
+        --codelist codelists/opensafely-psa-numeric-value.csv
+        --measure has_test_value
+    outputs:
+      moderately_sensitive:
+        measures: output/measures_psa_has_test_value.csv
+
+  generate_measures_psa_has_equality_comparator:
+    run: >
+      ehrql:v1 generate-measures
+        analysis/measure_definition.py
+        --output output/measures_psa_has_equality_comparator.csv
+        --
+        --codelist codelists/opensafely-psa-numeric-value.csv
+        --measure has_equality_comparator
+    outputs:
+      moderately_sensitive:
+        measures: output/measures_psa_has_equality_comparator.csv
+
+  generate_measures_psa_has_differential_comparator:
+    run: >
+      ehrql:v1 generate-measures
+        analysis/measure_definition.py
+        --output output/measures_psa_has_differential_comparator.csv
+        --
+        --codelist codelists/opensafely-psa-numeric-value.csv
+        --measure has_differential_comparator
+    outputs:
+      moderately_sensitive:
+        measures: output/measures_psa_has_differential_comparator.csv
+
+  generate_measures_psa_has_lower_bound:
+    run: >
+      ehrql:v1 generate-measures
+        analysis/measure_definition.py
+        --output output/measures_psa_has_lower_bound.csv
+        --
+        --codelist codelists/opensafely-psa-numeric-value.csv
+        --measure has_lower_bound
+    outputs:
+      moderately_sensitive:
+        measures: output/measures_psa_has_lower_bound.csv
+
+  generate_measures_psa_has_upper_bound:
+    run: >
+      ehrql:v1 generate-measures
+        analysis/measure_definition.py
+        --output output/measures_psa_has_upper_bound.csv
+        --
+        --codelist codelists/opensafely-psa-numeric-value.csv
+        --measure has_upper_bound
+    outputs:
+      moderately_sensitive:
+        measures: output/measures_psa_has_upper_bound.csv
+
+# ----------------- Test: alt_numeric ---------------------------------
+
+  generate_numeric_value_dataset_alt_numeric:
+    run: >
+      ehrql:v1 generate-dataset
+        analysis/proxy_null_analysis/numeric_value_dataset_definition.py
+        --output output/alt_numeric/proxy_null/numeric_value_dataset_alt_numeric.csv
+        --
+        --codelist codelists/opensafely-alanine-aminotransferase-alt-tests-numerical-value.csv
+    outputs:
+      highly_sensitive:
+        dataset: output/alt_numeric/proxy_null/numeric_value_dataset_alt_numeric.csv
+  generate_numeric_value_table_alt_numeric:
+    run: >
+      r:latest analysis/proxy_null_analysis/generate_freq_table.r 
+      --codelist codelists/opensafely-alanine-aminotransferase-alt-tests-numerical-value.csv
+    needs: [generate_numeric_value_dataset_alt_numeric]
+    outputs:
+      moderately_sensitive:
+        dataset: output/alt_numeric/proxy_null/top_1000_numeric_values_alt_numeric.csv
+  generate_numeric_value_histogram_alt_numeric:
+    run: >
+      r:latest analysis/proxy_null_analysis/generate_histogram.r 
+      --codelist codelists/opensafely-alanine-aminotransferase-alt-tests-numerical-value.csv
+    needs: [generate_numeric_value_table_alt_numeric]
+    outputs:
+      moderately_sensitive:
+        pic: output/alt_numeric/proxy_null/numeric_values_alt_numeric.png
+        pic2: output/alt_numeric/proxy_null/numeric_values_zoomed_alt_numeric.png
+  #generate_numeric_value_summary_alt_numeric:
+  #  run: >
+  #    python:latest analysis/proxy_null_analysis/summary_stats.py
+  #  needs: [generate_numeric_value_dataset_alt_numeric]
+  #  outputs:
+  #    moderately_sensitive:
+  #      table: output/alt_numeric/proxy_null/numeric_value_summary_alt_numeric.csv
+
+  generate_measures_alt_numeric_has_test_value:
+    run: >
+      ehrql:v1 generate-measures
+        analysis/measure_definition.py
+        --output output/measures_alt_numeric_has_test_value.csv
+        --
+        --codelist codelists/opensafely-alanine-aminotransferase-alt-tests-numerical-value.csv
+        --measure has_test_value
+    outputs:
+      moderately_sensitive:
+        measures: output/measures_alt_numeric_has_test_value.csv
+
+  generate_measures_alt_numeric_has_equality_comparator:
+    run: >
+      ehrql:v1 generate-measures
+        analysis/measure_definition.py
+        --output output/measures_alt_numeric_has_equality_comparator.csv
+        --
+        --codelist codelists/opensafely-alanine-aminotransferase-alt-tests-numerical-value.csv
+        --measure has_equality_comparator
+    outputs:
+      moderately_sensitive:
+        measures: output/measures_alt_numeric_has_equality_comparator.csv
+
+  generate_measures_alt_numeric_has_differential_comparator:
+    run: >
+      ehrql:v1 generate-measures
+        analysis/measure_definition.py
+        --output output/measures_alt_numeric_has_differential_comparator.csv
+        --
+        --codelist codelists/opensafely-alanine-aminotransferase-alt-tests-numerical-value.csv
+        --measure has_differential_comparator
+    outputs:
+      moderately_sensitive:
+        measures: output/measures_alt_numeric_has_differential_comparator.csv
+
+  generate_measures_alt_numeric_has_lower_bound:
+    run: >
+      ehrql:v1 generate-measures
+        analysis/measure_definition.py
+        --output output/measures_alt_numeric_has_lower_bound.csv
+        --
+        --codelist codelists/opensafely-alanine-aminotransferase-alt-tests-numerical-value.csv
+        --measure has_lower_bound
+    outputs:
+      moderately_sensitive:
+        measures: output/measures_alt_numeric_has_lower_bound.csv
+
+  generate_measures_alt_numeric_has_upper_bound:
+    run: >
+      ehrql:v1 generate-measures
+        analysis/measure_definition.py
+        --output output/measures_alt_numeric_has_upper_bound.csv
+        --
+        --codelist codelists/opensafely-alanine-aminotransferase-alt-tests-numerical-value.csv
+        --measure has_upper_bound
+    outputs:
+      moderately_sensitive:
+        measures: output/measures_alt_numeric_has_upper_bound.csv
+
   # Runs test to ensure correctness of measures queries
   generate_test_dataset:
     run: >

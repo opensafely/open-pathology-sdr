@@ -21,6 +21,12 @@ if (is.null(opt$codelist)) {
     test <- 'sodium'
 } else if (opt$codelist == 'codelists/opensafely-glycated-haemoglobin-hba1c-tests-numerical-value.csv') {
     test <- 'hba1c_numeric'
+} else if (opt$codelist == 'codelists/ardens-vitamin-d-level.csv') {
+    test <- 'vitd'
+} else if (opt$codelist == 'codelists/opensafely-alanine-aminotransferase-alt-tests-numerical-value.csv') {
+    test <- 'alt_numeric'
+} else if (opt$codelist == 'codelists/opensafely-psa-numeric-value.csv') {
+    test <- 'psa'
 }
 if (opt$test_run){
     test <- 'alt'
