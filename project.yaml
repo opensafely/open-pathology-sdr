@@ -31,13 +31,13 @@ actions:
       moderately_sensitive:
         pic: output/output/alt/proxy_null/numeric_values_alt.png
         pic2: output/output/alt/proxy_null/numeric_values_zoomed_alt.png
-  #generate_numeric_value_summary_alt:
-  #  run: >
-  #    python:latest analysis/proxy_null_analysis/summary_stats.py
-  #  needs: [generate_numeric_value_dataset_alt]
-  #  outputs:
-  #    moderately_sensitive:
-  #      table: output/alt/proxy_null/numeric_value_summary_alt.csv
+  generate_numeric_value_summary_alt:
+    run: >
+      r:latest analysis/proxy_null_analysis/summary_stats.r
+    needs: [generate_numeric_value_dataset_alt]
+    outputs:
+      moderately_sensitive:
+        table: output/alt/proxy_null/numeric_value_summary_alt.csv
 
   generate_measures_alt_has_test_value:
     run: >
@@ -127,13 +127,13 @@ actions:
       moderately_sensitive:
         pic: output/output/chol/proxy_null/numeric_values_chol.png
         pic2: output/output/chol/proxy_null/numeric_values_zoomed_chol.png
-  #generate_numeric_value_summary_chol:
-  #  run: >
-  #    python:latest analysis/proxy_null_analysis/summary_stats.py
-  #  needs: [generate_numeric_value_dataset_chol]
-  #  outputs:
-  #    moderately_sensitive:
-  #      table: output/chol/proxy_null/numeric_value_summary_chol.csv
+  generate_numeric_value_summary_chol:
+    run: >
+      r:latest analysis/proxy_null_analysis/summary_stats.r
+    needs: [generate_numeric_value_dataset_chol]
+    outputs:
+      moderately_sensitive:
+        table: output/chol/proxy_null/numeric_value_summary_chol.csv
 
   generate_measures_chol_has_test_value:
     run: >
@@ -223,13 +223,13 @@ actions:
       moderately_sensitive:
         pic: output/output/hba1c/proxy_null/numeric_values_hba1c.png
         pic2: output/output/hba1c/proxy_null/numeric_values_zoomed_hba1c.png
-  #generate_numeric_value_summary_hba1c:
-  #  run: >
-  #    python:latest analysis/proxy_null_analysis/summary_stats.py
-  #  needs: [generate_numeric_value_dataset_hba1c]
-  #  outputs:
-  #    moderately_sensitive:
-  #      table: output/hba1c/proxy_null/numeric_value_summary_hba1c.csv
+  generate_numeric_value_summary_hba1c:
+    run: >
+      r:latest analysis/proxy_null_analysis/summary_stats.r
+    needs: [generate_numeric_value_dataset_hba1c]
+    outputs:
+      moderately_sensitive:
+        table: output/hba1c/proxy_null/numeric_value_summary_hba1c.csv
 
   generate_measures_hba1c_has_test_value:
     run: >
@@ -319,13 +319,13 @@ actions:
       moderately_sensitive:
         pic: output/output/rbc/proxy_null/numeric_values_rbc.png
         pic2: output/output/rbc/proxy_null/numeric_values_zoomed_rbc.png
-  #generate_numeric_value_summary_rbc:
-  #  run: >
-  #    python:latest analysis/proxy_null_analysis/summary_stats.py
-  #  needs: [generate_numeric_value_dataset_rbc]
-  #  outputs:
-  #    moderately_sensitive:
-  #      table: output/rbc/proxy_null/numeric_value_summary_rbc.csv
+  generate_numeric_value_summary_rbc:
+    run: >
+      r:latest analysis/proxy_null_analysis/summary_stats.r
+    needs: [generate_numeric_value_dataset_rbc]
+    outputs:
+      moderately_sensitive:
+        table: output/rbc/proxy_null/numeric_value_summary_rbc.csv
 
   generate_measures_rbc_has_test_value:
     run: >
@@ -415,13 +415,13 @@ actions:
       moderately_sensitive:
         pic: output/output/sodium/proxy_null/numeric_values_sodium.png
         pic2: output/output/sodium/proxy_null/numeric_values_zoomed_sodium.png
-  #generate_numeric_value_summary_sodium:
-  #  run: >
-  #    python:latest analysis/proxy_null_analysis/summary_stats.py
-  #  needs: [generate_numeric_value_dataset_sodium]
-  #  outputs:
-  #    moderately_sensitive:
-  #      table: output/sodium/proxy_null/numeric_value_summary_sodium.csv
+  generate_numeric_value_summary_sodium:
+    run: >
+      r:latest analysis/proxy_null_analysis/summary_stats.r
+    needs: [generate_numeric_value_dataset_sodium]
+    outputs:
+      moderately_sensitive:
+        table: output/sodium/proxy_null/numeric_value_summary_sodium.csv
 
   generate_measures_sodium_has_test_value:
     run: >
