@@ -1,4 +1,4 @@
-# USAGE: Rscript analysis/plots.r --path_test [alt or chol or hba1c or rbc or sodium]
+# USAGE: Rscript analysis/plots.r --path_test [alt or chol or hba1c or hba1c_numeric or rbc or sodium]
 # RELEASED RESULTS SHOULD BE IN "OUTPUT/OUTPUT/[alt or chol or hba1c or rbc or sodium]"
 # GENERATES RESULTS PLOTS, DEPENDS ON format_results.py
 

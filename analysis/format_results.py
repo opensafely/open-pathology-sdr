@@ -1,4 +1,4 @@
-# USAGE: python analysis/format_results.py --path_test [alt or chol or hba1c or rbc or sodium]
+# USAGE: python analysis/format_results.py --path_test [alt or chol or hba1c or hba1c_numeric or rbc or sodium]
 # RELEASED RESULTS SHOULD BE IN "OUTPUT/OUTPUT/[alt or chol or hba1c or rbc or sodium]"
 # GENERATES RESULTS TABLES
 
