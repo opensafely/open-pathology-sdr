@@ -23,21 +23,24 @@ region = registrations.for_patient_on(INTERVAL.start_date).practice_nuts1_region
 codelist_event_count = codelist_events.count_for_patient()
 
 # Booleans testing for presence of each field in clinical_events_ranges
-if args.measure == 'has_test_value':
+if args.measure == "has_test_value":
     # Dont consider null and 0's as completed tests
-    query = ((clinical_events.numeric_value.is_not_null()) & (clinical_events.numeric_value != 0))
+    query = (clinical_events.numeric_value.is_not_null()) & (
+        clinical_events.numeric_value != 0
+    )
     # Use clinical_events instead of clinical_events_ranges for codelist_events
     codelist_events = clinical_events.where(
-        clinical_events.snomedct_code.is_in(codelist) & clinical_events.date.is_during(INTERVAL)
+        clinical_events.snomedct_code.is_in(codelist)
+        & clinical_events.date.is_during(INTERVAL)
     )
-elif args.measure == 'has_equality_comparator':
+elif args.measure == "has_equality_comparator":
     query = ranges.comparator.is_in(["=", "~"])
-elif args.measure == 'has_differential_comparator':
-    query = (ranges.comparator.is_not_null()) & ~ (ranges.comparator.is_in(["=", "~"]))
-elif args.measure == 'has_lower_bound':
-    query = ranges.upper_bound.is_not_null()
-elif args.measure == 'has_upper_bound':
-    query = ranges.lower_bound.is_not_null()
+elif args.measure == "has_differential_comparator":
+    query = ranges.comparator.is_in([">=", ">", "<", "<="])
+elif args.measure == "has_lower_bound":
+    query = (ranges.lower_bound.is_not_null()) & (ranges.lower_bound != 0)
+elif args.measure == "has_upper_bound":
+    query = (ranges.upper_bound.is_not_null()) & (ranges.upper_bound != 0)
 
 # Create filtered table query
 count = codelist_events.where(query).count_for_patient()
