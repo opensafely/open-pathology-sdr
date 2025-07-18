@@ -23,7 +23,7 @@ actions:
     outputs:
       moderately_sensitive:
         dataset: output/alt/proxy_null/top_1000_*_alt.csv
-  generate_numeric_value_histogram_alt:
+  generate_value_histogram_alt:
     run: >
       r:latest analysis/proxy_null_analysis/generate_histogram.r 
       --codelist codelists/opensafely-alanine-aminotransferase-alt-tests.csv
@@ -112,7 +112,7 @@ actions:
     outputs:
       moderately_sensitive:
         dataset: output/chol/proxy_null/top_1000_*_chol.csv
-  generate_numeric_value_histogram_chol:
+  generate_value_histogram_chol:
     run: >
       r:latest analysis/proxy_null_analysis/generate_histogram.r 
       --codelist codelists/opensafely-cholesterol-tests.csv
@@ -201,7 +201,7 @@ actions:
     outputs:
       moderately_sensitive:
         dataset: output/hba1c/proxy_null/top_1000_*_hba1c.csv
-  generate_numeric_value_histogram_hba1c:
+  generate_value_histogram_hba1c:
     run: >
       r:latest analysis/proxy_null_analysis/generate_histogram.r 
       --codelist codelists/opensafely-glycated-haemoglobin-hba1c-tests.csv
@@ -290,7 +290,7 @@ actions:
     outputs:
       moderately_sensitive:
         dataset: output/rbc/proxy_null/top_1000_*_rbc.csv
-  generate_numeric_value_histogram_rbc:
+  generate_value_histogram_rbc:
     run: >
       r:latest analysis/proxy_null_analysis/generate_histogram.r 
       --codelist codelists/opensafely-red-blood-cell-rbc-tests.csv
@@ -379,7 +379,7 @@ actions:
     outputs:
       moderately_sensitive:
         dataset: output/sodium/proxy_null/top_1000_*_sodium.csv
-  generate_numeric_value_histogram_sodium:
+  generate_value_histogram_sodium:
     run: >
       r:latest analysis/proxy_null_analysis/generate_histogram.r 
       --codelist codelists/opensafely-sodium-tests-numerical-value.csv
@@ -468,7 +468,7 @@ actions:
     outputs:
       moderately_sensitive:
         dataset: output/hba1c_numeric/proxy_null/top_1000_*_hba1c_numeric.csv
-  generate_numeric_value_histogram_hba1c_numeric:
+  generate_value_histogram_hba1c_numeric:
     run: >
       r:latest analysis/proxy_null_analysis/generate_histogram.r 
       --codelist codelists/opensafely-glycated-haemoglobin-hba1c-tests-numerical-value.csv
@@ -557,7 +557,7 @@ actions:
     outputs:
       moderately_sensitive:
         dataset: output/vitd/proxy_null/top_1000_*_vitd.csv
-  generate_numeric_value_histogram_vitd:
+  generate_value_histogram_vitd:
     run: >
       r:latest analysis/proxy_null_analysis/generate_histogram.r 
       --codelist codelists/ardens-vitamin-d-level.csv
@@ -646,7 +646,7 @@ actions:
     outputs:
       moderately_sensitive:
         dataset: output/psa/proxy_null/top_1000_*_psa.csv
-  generate_numeric_value_histogram_psa:
+  generate_value_histogram_psa:
     run: >
       r:latest analysis/proxy_null_analysis/generate_histogram.r 
       --codelist codelists/opensafely-psa-numeric-value.csv
@@ -735,7 +735,7 @@ actions:
     outputs:
       moderately_sensitive:
         dataset: output/alt_numeric/proxy_null/top_1000_*_alt_numeric.csv
-  generate_numeric_value_histogram_alt_numeric:
+  generate_value_histogram_alt_numeric:
     run: >
       r:latest analysis/proxy_null_analysis/generate_histogram.r 
       --codelist codelists/opensafely-alanine-aminotransferase-alt-tests-numerical-value.csv
