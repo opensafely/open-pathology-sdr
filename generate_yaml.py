@@ -58,6 +58,7 @@ yaml_body_template = """
     outputs:
       moderately_sensitive:
         dataset: output/{test}/proxy_null/top_1000_*_{test}.csv
+        totals: output/{test}/proxy_null/total_tests_midpoint6_{test}.csv
   generate_value_histogram_{test}:
     run: >
       r:latest analysis/proxy_null_analysis/generate_histogram.r 
