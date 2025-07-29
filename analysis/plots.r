@@ -1,78 +1,80 @@
-# USAGE: Rscript analysis/plots.r --path_test [alt or chol or hba1c or hba1c_numeric or rbc or sodium]
-# RELEASED RESULTS SHOULD BE IN "OUTPUT/OUTPUT/[alt or chol or hba1c or rbc or sodium]"
+# USAGE: Rscript analysis/plots.r --format [lines_region OR lines_test]
+# RELEASED RESULTS SHOULD BE IN "OUTPUT/OUTPUT/[test]"
 # GENERATES RESULTS PLOTS, DEPENDS ON format_results.py
 
 library(tidyverse)
 library(optparse)
 library(glue)
+library(stringr)
 
 # Parse the arguments
-option_list <- list(make_option(c("--path_test"), type = "character"))
+option_list <- list(make_option(c("--format"), type = "character"))
 opt <- parse_args(OptionParser(option_list = option_list))
-# Load the data
-df <- read_csv(glue("output/output/{opt$path_test}/results_table_{opt$path_test}.csv"))
 
-df <- df %>% select(-rate_lower_bound)
-df <- df %>% rename(rate_bounds = rate_upper_bound)
+# Load the data for all tests
+tests <- c('alt', 'chol', 'hba1c_numeric', 'rbc', 'sodium')
 
-# Reshape to long format
-df_long <- df %>%
-  pivot_longer(
-    cols = starts_with("rate_"),
-    names_to = "rate_type",
-    values_to = "rate"
-  )
+# Read each CSV into a list of dataframes, adding a column to identify the test
+df_list <- lapply(tests, function(test) {
+  read_csv(glue("output/output/{test}/results_table_{test}.csv")) %>%
+    mutate(test_name = test)  # optional: add test name as a column
+})
 
-df_long <- df_long %>%
-  mutate(rate_type = factor(rate_type,
-    levels = c("rate_bounds", "rate_equality_comparator", "rate_test_value", "rate_differential_comparator"),
-    labels = c("Upper/lower Bound", "Equality Comparator", "Test Value", "Differential Comparator")
-  ))
+# Concatenate all dataframes into one
+df_combined <- bind_rows(df_list)
+df_combined <- df_combined %>% select(-rate_lower_bound)
+df_combined <- df_combined %>% rename(rate_bounds = rate_upper_bound)
+print(df_combined)
 
-#df_plot1 <- filter(df_long, rate_type != 'rate_differential_comparator')
-df_plot1 <- df_long
+# Choose plot format
+if (opt$format == 'lines_region'){
+  color_col = 'region'
+  facet_col = 'test_name'
 
-p <- ggplot(df_plot1, aes(x = interval_start, y = rate, color = rate_type, linetype = rate_type)) +
-  geom_line(alpha = 0.6) +
-  facet_wrap(~ region) +
-  scale_y_continuous(limits = c(0, 100)) +
-  scale_linetype_manual(values = c(
-    "Upper/lower Bound" = "dashed",
-    "Equality Comparator" = "dashed",
-    "Differential Comparator" = "dashed",
-    "Test Value" = "dashed"
-  )) +
-  scale_color_manual(
-    values = c(
-    "Upper/lower Bound" = "red",
-    "Equality Comparator" = "blue",
-    "Differential Comparator" = "black",
-    "Test Value" = "green")) +
-  labs(
-    title = "% of Tests with Field by Region Over Time",
-    x = "Interval Start",
-    y = "% of Tests",
-    color = "Field",
-    linetype = "Field" 
-  ) +
-  theme(axis.text.x = element_text(angle = 45, hjust = 1),
-    legend.position = "bottom")
+} else if (opt$format == 'lines_test'){
+  color_col = 'test_name'
+  facet_col = 'region'
+}
 
-# ------ Differential comparator plot ------------------------------------------------
+# Change strings to be more readable
+col_map <- c("rate_test_value" = "Test Value", "rate_bounds" = "Reference Range", 'rate_equality_comparator' = 'Equality Comparator', 
+            'rate_differential_comparator' = 'Differential Comparator')
+# Replace column names the mapping
+df_combined <- df_combined %>%
+  rename_with(~ ifelse(. %in% names(col_map), col_map[.], .))
+value_map <- c("alt" = "ALT", "chol" = "Cholesterol", "hba1c_numeric" = "HbA1c", "rbc" = "RBC", "sodium" = "Sodium")
+df_combined$test_name <- value_map[df_combined$test_name]
 
-# df_plot2 <- filter(df_long, rate_type == 'rate_differential_comparator')
+# Iteratively generate plots for each measure
+measures <- c('Test Value', 'Reference Range', 'Equality Comparator', 'Differential Comparator')
+df_plot <- df_combined
+print(df_plot)
+for (measure in measures){ 
 
-# p2 <- ggplot(df_plot2, aes(x = interval_start, y = rate)) +
-#   geom_line(alpha = 1) +
-#   facet_wrap(~ region) +
-#   scale_y_continuous(limits = c(0, 100)) +
-#   labs(
-#     title = "% of Tests with Differential Comparator by Region Over Time",
-#     x = "Interval Start",
-#     y = "% of Tests"
-#   ) +
-#   theme(axis.text.x = element_text(angle = 45, hjust = 1))
+  p <- ggplot(df_plot, aes(x = interval_start, y = .data[[measure]], color = .data[[color_col]])) +
+    geom_line(alpha = 0.6, linetype = 'dashed') +
+    facet_wrap(~ .data[[facet_col]], nrow = 3) +
+    scale_y_continuous(limits = c(0, 100)) +
+    # scale_color_manual(
+    #   values = c(
+    #   "Upper/lower Bound" = "red",
+    #   "Equality Comparator" = "blue",
+    #   "Differential Comparator" = "black",
+    #   "Test Value" = "green")) +
+    labs(
+      title = glue("% of Tests with Non-Null {measure}"),
+      y = "% of Tests",
+      color = "Region",
+    ) +
+    theme(axis.text.x = element_text(angle = 45, hjust = 1),
+      legend.position = c(1, 0),         # Position of legend
+      legend.justification = c(1, 0),          # Part of legend that the position applies to
+      legend.background = element_rect(fill = alpha("white", 0.8), color = "grey80"),
+      legend.box.background = element_rect(color = "grey50"),
+      legend.title = element_text(face = "bold"),
+      axis.title.x = element_blank()
+    ) +
+    guides(color = guide_legend(nrow = 3))
 
-ggsave(glue("output/output/{opt$path_test}/{opt$path_test}_plot.png"), plot = p, width = 12, height = 8, dpi = 300)
-#ggsave(glue("output/output/{opt$path_test}/{opt$path_test}_plot_diff.png"), plot = p2, width = 12, height = 8, dpi = 300)
-
+  ggsave(glue("output/output/{measure}_plot_{opt$format}.png"), plot = p, width = 12, height = 8, dpi = 300)
+}
