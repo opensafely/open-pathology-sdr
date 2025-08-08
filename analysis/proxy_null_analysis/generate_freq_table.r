@@ -1,14 +1,14 @@
 library(ggplot2)
 library(dplyr)
 library(glue)
-source("analysis/proxy_null_analysis/config.r") # Provides opt$codelist and test variables
+source("analysis/proxy_null_analysis/config.r") # Provides opt$test and codelist variables
 
 # A function to apply midpoint rounding as per OS documentation on disclosure control
 roundmid_any <- function(x, to=6){
   ceiling(x/to)*to - (floor(to/2)*(x!=0))
 }
 
-measures <- read.csv(glue('output/{test}/proxy_null/numeric_value_dataset_{test}.csv'))
+measures <- read.csv(glue('output/{opt$test}/proxy_null/numeric_value_dataset_{opt$test}.csv'))
 
 #--------- Create frequency table -------------------------------------------------
 
@@ -26,5 +26,5 @@ top_1000 <- freq_table %>%
 top_1000$count <- roundmid_any(top_1000$count)
 top_1000 <- rename(top_1000, count_midpoint6 = count)
 
-write.csv(top_1000, glue("output/{test}/proxy_null/top_1000_numeric_values_{test}.csv"), row.names = FALSE)
+write.csv(top_1000, glue("output/{opt$test}/proxy_null/top_1000_numeric_values_{opt$test}.csv"), row.names = FALSE)
 

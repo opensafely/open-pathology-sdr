@@ -22,9 +22,6 @@ df_list <- lapply(tests, function(test) {
 
 # Concatenate all dataframes into one
 df_combined <- bind_rows(df_list)
-df_combined <- df_combined %>% select(-rate_lower_bound)
-df_combined <- df_combined %>% rename(rate_bounds = rate_upper_bound)
-print(df_combined)
 
 # Choose plot format
 if (opt$format == 'lines_region'){
@@ -37,18 +34,36 @@ if (opt$format == 'lines_region'){
 }
 
 # Change strings to be more readable
-col_map <- c("rate_test_value" = "Test Value", "rate_bounds" = "Reference Range", 'rate_equality_comparator' = 'Equality Comparator', 
-            'rate_differential_comparator' = 'Differential Comparator')
+col_map <- c("rate_test_value" = "Test Value", "rate_lower_bound" = "Lower Bound", "rate_upper_bound" = "Upper Bound", 
+            'rate_equality_comparator' = 'Equality Comparator', 'rate_differential_comparator' = 'Differential Comparator')
 # Replace column names the mapping
 df_combined <- df_combined %>%
   rename_with(~ ifelse(. %in% names(col_map), col_map[.], .))
 value_map <- c("alt" = "ALT", "chol" = "Cholesterol", "hba1c_numeric" = "HbA1c", "rbc" = "RBC", "sodium" = "Sodium")
 df_combined$test_name <- value_map[df_combined$test_name]
 
+# Step 1: Reshape ALL test-specific columns into long format
+df_long <- pivot_longer(
+  data = df_combined,
+  cols = c(
+    "Test Value", "Lower Bound", "Upper Bound", "Equality Comparator", "Differential Comparator",
+    "numerator_has_differential_comparator", "numerator_has_equality_comparator",
+    "numerator_has_lower_bound", "numerator_has_upper_bound",
+    "numerator_has_test_value",
+    "denominator_test_value", "denominator_bounds", "denominator_comparators"
+  ),
+  names_to = "field_name",
+  values_to = "value"
+)
+
+# Optional: View final result
+print(df_long)
+write.csv(df_long, "output/output/df_combined.csv")
+
 # Iteratively generate plots for each measure
-measures <- c('Test Value', 'Reference Range', 'Equality Comparator', 'Differential Comparator')
+measures <- c('Test Value', 'Lower Bound', 'Upper Bound', 'Equality Comparator', 'Differential Comparator')
 df_plot <- df_combined
-print(df_plot)
+
 for (measure in measures){ 
 
   p <- ggplot(df_plot, aes(x = interval_start, y = .data[[measure]], color = .data[[color_col]])) +
