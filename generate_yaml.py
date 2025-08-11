@@ -58,21 +58,21 @@ yaml_body_template = """
     outputs:
       moderately_sensitive:
         dataset: output/{test}/proxy_null/top_1000_numeric_values_{test}.csv
-  generate_numeric_value_histogram_{test}:
-    run: >
-      r:latest analysis/proxy_null_analysis/generate_histogram.r 
-      --codelist {path}
-    outputs:
-      moderately_sensitive:
-        pic: output/output/{test}/proxy_null/numeric_values_{test}.png
-        pic2: output/output/{test}/proxy_null/numeric_values_zoomed_{test}.png
-  generate_numeric_value_summary_{test}:
-    run: >
-      r:latest analysis/proxy_null_analysis/summary_stats.r
-    needs: [generate_numeric_value_dataset_{test}]
-    outputs:
-      moderately_sensitive:
-        table: output/{test}/proxy_null/numeric_value_summary_{test}.csv
+  # generate_numeric_value_histogram_{test}:
+  #   run: >
+  #     r:latest analysis/proxy_null_analysis/generate_histogram.r 
+  #     --codelist {path}
+  #   outputs:
+  #     moderately_sensitive:
+  #       pic: output/output/{test}/proxy_null/numeric_values_{test}.png
+  #       pic2: output/output/{test}/proxy_null/numeric_values_zoomed_{test}.png
+  # generate_numeric_value_summary_{test}:
+  #   run: >
+  #     r:latest analysis/proxy_null_analysis/summary_stats.r
+  #   needs: [generate_numeric_value_dataset_{test}]
+  #   outputs:
+  #     moderately_sensitive:
+  #       table: output/{test}/proxy_null/numeric_value_summary_{test}.csv
 """
 
 yaml_body = ""

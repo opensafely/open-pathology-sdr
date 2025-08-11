@@ -29,109 +29,96 @@ if (opt$test_run){
 
 # Iteratively generate histograms for each field
 fields <- c('numeric_value', 'ref_range')
-for (field in fields){
+pseudonyms <- c(
+"numeric_value" = "Test Value",
+"upper_bound" = "Upper Bound",
+"lower_bound" = "Lower Bound"
+)
 
-  # If test is hba1c, create a facet plot to compare hba1c_numeric and hba1c normal codelists
-  if (opt$test == 'hba1c_numeric'){
-    
-    # Initialize a list to store dataframes
-    df_list <- list()
-    tests <- c('hba1c', 'hba1c_numeric')
+# If test is hba1c, create a facet plot to compare hba1c_numeric and hba1c normal codelists
+if (opt$test == 'hba1c_numeric') {
 
-    # Loop through each test
-    for(test in tests){
-      top_1000 <- read.csv(glue('output/output/{opt$test}/proxy_null/top_1000_numeric_values_{opt$test}.csv'))
-      n_tests_table <- read.csv(glue("output/output/{opt$test}/proxy_null/total_tests_midpoint6_{opt$test}.csv"))
+  fields <- c('numeric_value', 'upper_bound', 'lower_bound')
+  tests <- c('hba1c', 'hba1c_numeric')
+  df_list <- list()
 
-      # Round floats to nearest integer (i.e. binning)
+  for (test in tests) {
+
+    for (field in fields) {
+
+      top_1000 <- read.csv(glue('output/output/{test}/proxy_null/top_1000_{field}_{test}.csv'))
+      n_tests_table <- read.csv(glue("output/output/{test}/proxy_null/total_tests_midpoint6_{test}.csv"))
+
       top_1000$value <- round(top_1000$value)
       n_tests <- n_tests_table[n_tests_table$field == field, 'total_tests_midpoint6']
 
-      # Aggregate to get propns per integer
-      aggregated_top_1000 <- top_1000 %>%
+      aggregated <- top_1000 %>%
         group_by(value) %>%
-        summarise(total_propn_midpoint6_derived = sum(propn_midpoint6), .groups = "drop")
+        summarise(total_propn_midpoint6_derived = sum(propn_midpoint6), .groups = "drop") %>%
+        mutate(
+          test = test,
+          field = field,
+          field_formatted = ifelse(
+          field %in% names(pseudonyms),
+          glue("{pseudonyms[field]}"),
+          glue("{gsub('_', ' ', field)}")
+          )
+        )
 
-      # Add test name for tracking
-      aggregated_top_1000$test <- test
-
-      # Store in list
-      df_list[[test]] <- aggregated_top_1000
+      df_list[[paste(test, field, sep = "_")]] <- aggregated
     }
-
-    # Combine all test dataframes vertically
-    combined_df <- bind_rows(df_list)
-
-    # Generate faceted histogram
-    p <- ggplot(combined_df, aes(x = value, y = total_propn_midpoint6_derived)) +
-      geom_bar(stat = "identity", 
-              fill = "lightblue", 
-              color = "black", 
-              alpha = 0.7) +
-      scale_x_continuous(limits = c(min(combined_df$value) - 2, max(combined_df$value) + 2)) +
-      scale_y_continuous(labels = label_comma()) +  # disables scientific notation
-      labs(title = "Histogram of 1000 Most Common {field_formatted}s, n = {n_tests}", 
-          x = field_formatted, 
-          y = "Proportion") +
-      facet_wrap(~ test, scales = "fixed") 
-
-    ggsave(glue("output/output/{opt$test}/proxy_null/numeric_values_{opt$test}.png"), plot = p, width = 10, height = 5)
-
-  } else{ # For non-hba1c tests, create a simple histogram
-
-    # Initialize a list to store dataframes
-    top_1000_list <- list()
-    aggregated_top_1000_list <- list()
-    fields <- c('numeric_value', 'upper_bound', 'lower_bound')
-
-    # Loop through each test
-    for(field in fields){
-    
-      top_1000_list[[field]] <- read.csv(glue('output/output/{opt$test}/proxy_null/top_1000_{field}_{opt$test}.csv'))
-      n_tests_table <- read.csv(glue("output/output/{opt$test}/proxy_null/total_tests_midpoint6_{opt$test}.csv"))
-
-      # Round floats to nearest integer (i.e. binning)
-      top_1000_list[[field]]$value <- round(top_1000_list[[field]]$value)
-      n_tests <- n_tests_table[n_tests_table$field == field, 'total_tests_midpoint6']
-
-      # Aggregate to get propns per integer
-      aggregated_top_1000_list[[field]] <- top_1000_list[[field]] %>%
-        group_by(value) %>%
-        summarise(total_propn_midpoint6_derived = sum(propn_midpoint6), .groups = "drop")
-
-      # Add test name for tracking
-      aggregated_top_1000_list[[field]]$field <- field
-
-    }
-
-    # Generate test value histogram
-    p_numeric_value <- ggplot(aggregated_top_1000_list[['numeric_value']], aes(x = value, y = total_propn_midpoint6_derived)) +
-      geom_bar(stat = "identity", 
-              fill = "lightblue", 
-              color = "black", 
-              alpha = 0.7) +
-      scale_x_continuous(limits = c(min(aggregated_top_1000_list[['numeric_value']]$value) - 2, max(aggregated_top_1000_list[['numeric_value']]$value) + 2)) +
-      scale_y_continuous(labels = label_comma()) + # this line disables scientific notation
-      labs(title = glue("Histogram of 1000 Most Common Test Values for {opt$test}, n = {n_tests}"), 
-          x = "Test Value", 
-          y = "Proportion")
-
-    # Generate ref range histogram
-    aggregated_top_1000_ref <- rbind(aggregated_top_1000_list$lower_bound, aggregated_top_1000_list$upper_bound)
-
-    p_ref_range <- ggplot(aggregated_top_1000_ref, aes(x = value, y = total_propn_midpoint6_derived, fill = field)) +
-      geom_bar(stat = "identity", 
-              alpha = 0.7) +
-      #facet_wrap(~ field) +
-      scale_x_continuous(limits = c(min(aggregated_top_1000_ref$value) - 2, max(aggregated_top_1000_ref$value) + 2)) +
-      scale_y_continuous(labels = label_comma()) + # this line disables scientific notation
-      labs(title = glue("Histogram of 1000 Most Common Reference Range values for {opt$test}, n = {n_tests}"), 
-          x = "Value", 
-          y = "Proportion")
-
-    ggsave(glue("output/output/{opt$test}/proxy_null/numeric_value_{opt$test}.png"), plot = p_numeric_value)
-    ggsave(glue("output/output/{opt$test}/proxy_null/ref_range_value_{opt$test}.png"), plot = p_ref_range, width = 12, height = 8, dpi = 300)
   }
-}
+
+  combined_df <- bind_rows(df_list)
+
+  p <- ggplot(combined_df, aes(x = value, y = total_propn_midpoint6_derived)) +
+    geom_bar(stat = "identity", fill = "lightblue", color = "black", alpha = 0.7) +
+    scale_y_continuous(labels = label_comma()) +
+    labs(title = "Histogram of 1000 Most Common Values", x = "Value", y = "Proportion") +
+    facet_grid(field_formatted ~ test, scales = "free")
+
+  ggsave(glue("output/output/{opt$test}/proxy_null/all_values_{opt$test}.png"),
+        plot = p, width = 12, height = 8, dpi = 300)
+
+} else {
+
+  fields <- c('numeric_value', 'upper_bound', 'lower_bound')
+  df_list <- list()
+
+  for (field in fields) {
+
+    top_1000 <- read.csv(glue('output/output/{opt$test}/proxy_null/top_1000_{field}_{opt$test}.csv'))
+    n_tests_table <- read.csv(glue("output/output/{opt$test}/proxy_null/total_tests_midpoint6_{opt$test}.csv"))
+
+    top_1000$value <- round(top_1000$value)
+    n_tests <- n_tests_table[n_tests_table$field == field, 'total_tests_midpoint6']
+
+  aggregated <- top_1000 %>%
+    group_by(value) %>%
+    summarise(total_propn_midpoint6_derived = sum(propn_midpoint6), .groups = "drop") %>%
+    mutate(
+      # Replace field with pseudonym if available, otherwise keep original
+      field_formatted = ifelse(
+        field %in% names(pseudonyms),
+        glue("{pseudonyms[field]}"),
+        glue("{gsub('_', ' ', field)}")
+      )
+    )
+    df_list[[field]] <- aggregated
+  }
+
+  combined_df <- bind_rows(df_list)
+
+  p <- ggplot(combined_df, aes(x = value, y = total_propn_midpoint6_derived)) +
+    geom_bar(stat = "identity", fill = "lightblue", color = "black", alpha = 0.7) +
+    scale_y_continuous(labels = label_comma()) +
+    labs(title = glue("Histogram of 1000 Most Common Values for {opt$test}"),
+          x = "Value", y = "Proportion") +
+    facet_wrap(~ field_formatted, scales = "free", ncol = 1)
+
+  ggsave(glue("output/output/{opt$test}/proxy_null/all_values_{opt$test}.png"),
+          plot = p, width = 10, height = 8, dpi = 300)
+  }
+
 
  
