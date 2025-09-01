@@ -91,7 +91,17 @@ for test, path in codelists.items():
         yaml_body += yaml_measure_template.format(test = test, codelist_path = path, measure = measure)
 
 # ---- YAML TESTS ------
-yaml_test = '''
+yaml_summary = '''
+  # Summarise data
+  generate_value_summary:
+      run: >
+        python:latest python analysis/proxy_null_analysis/summary_stats.py 
+      needs: [generate_value_dataset_alt, generate_value_dataset_chol, 
+                generate_value_dataset_rbc, generate_value_dataset_hba1c_numeric, 
+                generate_value_dataset_hba1c, generate_value_dataset_sodium]
+      outputs:
+        moderately_sensitive:
+          dataset: output/*/proxy_null/value_summary*.csv
   # Runs test to ensure correctness of measures queries
   generate_test_dataset:
     run: >
@@ -105,6 +115,6 @@ yaml_test = '''
       highly_sensitive:
         dataset: output/test_dataset.csv
 '''
-yaml = yaml_header + yaml_body + yaml_test
+yaml = yaml_header + yaml_body + yaml_summary
 with open("project.yaml", "w") as file:
        file.write(yaml)

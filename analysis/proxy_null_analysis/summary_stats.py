@@ -1,5 +1,25 @@
+# This script produces summary stats for test value and reference range measures
+# USAGE: python analysis/proxy_null_analysis/summary_stats.py (no options)
+
+import os
 import pandas as pd
 
-df = pd.read_csv("output/numeric_value_dataset.csv")
+tests = ['alt', 'chol', 'hba1c', 'rbc', 'sodium','hba1c_numeric']
 
-df[['codelist_event_count', 'numeric_value']].agg(['sum', 'mean', 'median', 'var', 'std', 'min', 'max', 'count']).to_csv('output/numeric_value_summary.csv')
+# Define lower and upper quartile functions outside loop
+def q25(x): return x.quantile(0.25)
+def q75(x): return x.quantile(0.75)
+
+# Iterate over each test
+for test in tests:
+    path = f'output/{test}/proxy_null/value_dataset_{test}.csv'
+
+    df = pd.read_csv(path)
+
+    # Summarise each of the following fields:
+    cols = ['codelist_event_count', 'numeric_value', 'upper_bound', 'lower_bound']
+
+    # Summarise test and reference range measures
+    summary = df[cols].agg(['sum','mean','median','var','std','count','nunique', q25, q75])
+    summary.to_csv(f'output/{test}/proxy_null/value_summary_{test}.csv')
+
