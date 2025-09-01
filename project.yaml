@@ -813,6 +813,16 @@ actions:
       moderately_sensitive:
         measures: output/measures_alt_numeric_has_upper_bound.csv
 
+  # Summarise data
+  generate_value_summary:
+      run: >
+        python:latest python analysis/proxy_null_analysis/summary_stats.py 
+      needs: [generate_value_dataset_alt, generate_value_dataset_chol, 
+                generate_value_dataset_rbc, generate_value_dataset_hba1c_numeric, 
+                generate_value_dataset_hba1c, generate_value_dataset_sodium]
+      outputs:
+        moderately_sensitive:
+          dataset: output/*/proxy_null/value_summary*.csv
   # Runs test to ensure correctness of measures queries
   generate_test_dataset:
     run: >
