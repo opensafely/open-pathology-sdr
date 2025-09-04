@@ -1,3 +1,5 @@
+# USAGE: r analysis/univariate_plots.r
+
 #install.packages('sf')
 library(sf)
 library(dplyr)
@@ -6,44 +8,47 @@ library(ggplot2)
 
 df <- read.csv("output/output/OP SDR results table - Sheet5.csv")
 
-# Load shapefile (UK regions)
+# Load shapefile
 uk_regions <- st_read("output/output/NUTS_Level_1_January_2018_GCB_in_the_United_Kingdom_2022_-2753267915301604886.geojson")
 uk_regions$nuts118nm <- gsub(" \\(England\\)", "", uk_regions$nuts118nm)
 uk_regions$nuts118nm <- gsub(" of England", "", uk_regions$nuts118nm)
 
-# Pivot data
+# Pivot data (keep Field.name!)
 df_long <- df %>%
-  filter(Field.name == "Equality Comparator") %>%  # filter rows
-  select(-Field.name) %>%                  # drop the column
   pivot_longer(
-    -Region, 
+    cols = -(c(Field.name, Region)), 
     names_to = "Test", 
     values_to = "Value"
   )
 
-# Merge
+# Merge shapefile and data
 merged <- uk_regions %>%
-  left_join(df_long, by = c("nuts118nm" = "Region"))
+  left_join(df_long, by = c("nuts118nm" = "Region")) %>%
+  filter(!is.na(Test), !is.na(Field.name))
 
-merged <- merged %>% filter(!is.na(Test))
+# Reorder field names
+merged$Field.name <- factor(
+  merged$Field.name,
+  levels = c("Test Value", "Upper Bound", "Lower Bound", "Equality Comparator", "Differential Comparator")
+)
 
-# Facet plot
+# Facet by BOTH Test and Field.name
 p <- ggplot(merged) +
   geom_sf(aes(fill = Value), color = "white") +
   scale_fill_gradient(
-    low = "white",   # low values = white
-    high = "red",     # high values = red
-    name = "Non-null Equality Comparator %"
+    low = "white",
+    high = "red",
+    name = "Non-null %"
   ) +
-  facet_wrap(~Test) +
+  facet_grid(Field.name ~ Test, switch = 'y') +
   theme(
-    axis.text.x = element_blank(),  # removes x-axis tick labels
-    axis.text.y = element_blank(),  # removes y-axis tick labels
-    axis.ticks = element_blank()    # removes tick marks themselves
+    axis.text.x = element_blank(),
+    axis.text.y = element_blank(),
+    axis.ticks = element_blank(),
   )
 
+ggsave("output/output/regions_plot_grid.png", plot = p, width = 10, height = 10, dpi = 300)
 
-ggsave("output/output/regions_plot.png", plot = p, width = 12, height = 8, dpi = 300)
 
 # ------------- Time plot ----------------------------
 
