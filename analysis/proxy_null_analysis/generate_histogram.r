@@ -18,8 +18,8 @@ for (field in fields){
     # Tabulate and convert to data frame
     top_1000 <- as.data.frame(table(sim_data))
     # Rename columns for clarity
-    colnames(top_1000) <- c("value", "count_midpoint6")
-    top_1000[top_1000$value == 0, ]$count_midpoint6 <- top_1000[top_1000$value == 0, ]$count_midpoint6 + 1000
+    colnames(top_1000) <- c("value", "count_mp6")
+    top_1000[top_1000$value == 0, ]$count_mp6 <- top_1000[top_1000$value == 0, ]$count_mp6 + 1000
     # Convert 'value' from factor to numeric
     top_1000$value <- as.numeric(as.character(top_1000$value))
     # Show first few values
@@ -30,14 +30,13 @@ for (field in fields){
 
   # Round floats to nearest integer (i.e. binning)
   top_1000$value <- round(top_1000$value)
-
   # Aggregate to get propn per integer
   aggregated_top_1000 <- top_1000 %>%
     group_by(value) %>%
-    summarise(total_propn_midpoint6 = sum(propn_midpoint6), .groups = "drop")
+    summarise(total_propn_mp6 = sum(propn_mp6), .groups = "drop")
 
   # Generate histogram
-  p <- ggplot(aggregated_top_1000, aes(x = value, y = total_propn_midpoint6)) +
+  p <- ggplot(aggregated_top_1000, aes(x = value, y = total_propn_mp6)) +
     geom_bar(stat = "identity", 
             fill = "lightblue", 
             color = "black", 
