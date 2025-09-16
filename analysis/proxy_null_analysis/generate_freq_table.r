@@ -14,22 +14,30 @@ measures <- read.csv(glue('output/{test}/proxy_null/value_dataset_{test}.csv'))
 #--------- Create frequency table -------------------------------------------------
 
 fields <- c("numeric_value", "lower_bound", "upper_bound")
-total_tests_midpoint6_list <- list() 
+total_tests_mp6_list <- list() 
 
 for (field in fields) {
 
   # Select relevant columns
-  measures_sub <- select(measures, codelist_event_count, all_of(field))
+  measures_sub <- select(measures, codelist_event_count, codelist_event_exists, all_of(field))
 
   # Extract total number of tests in time period
-  total_tests <- sum(measures_sub$codelist_event_count, na.rm = TRUE)
-  total_tests_midpoint6 <- roundmid_any(total_tests)
+  total_tests_exists <- sum(measures_sub$codelist_event_exists, na.rm = TRUE)
+  total_tests_exists_mp6 <- roundmid_any(total_tests_exists)
+
+  total_tests_count <- sum(measures_sub$codelist_event_count, na.rm = TRUE)
+  total_tests_count_mp6 <- roundmid_any(total_tests_count)
+
+  total_tests_zero <- sum(measures_sub$zero_count, na.rm = TRUE)
+  total_tests_zero_mp6 <- roundmid_any(total_tests_zero)
 
   # Add total to table
-  total_tests_midpoint6_list[[length(total_tests_midpoint6_list) + 1]] <- tibble(
+  total_tests_mp6_list[[length(total_tests_mp6_list) + 1]] <- tibble(
     test = test,
     field = field,
-    total_tests_midpoint6 = total_tests_midpoint6
+    total_tests_exists_mp6 = total_tests_exists_mp6,
+    total_tests_count_mp6 = total_tests_count_mp6,
+    total_tests_zero_mp6 = total_tests_zero_mp6
   )
 
   # Generate frequency per value table
@@ -42,10 +50,10 @@ for (field in fields) {
     arrange(desc(count)) %>%
     slice_head(n = 1000) %>%
     mutate(
-      count_midpoint6 = roundmid_any(count),
-      propn_midpoint6 = ((count_midpoint6 / total_tests_midpoint6)*100)
+      count_mp6 = roundmid_any(count),
+      propn_mp6 = ((count_mp6 / total_tests_exists_mp6)*100)
     ) %>%
-    select(value, count_midpoint6, propn_midpoint6)
+    select(value, count_mp6, propn_mp6)
 
   # Save top 1000 table per field
   write.csv(
@@ -56,11 +64,11 @@ for (field in fields) {
 }
 
 # Combine all totals into one table and write it
-total_tests_midpoint6_df <- bind_rows(total_tests_midpoint6_list)
+total_tests_mp6_df <- bind_rows(total_tests_mp6_list)
 
 write_csv(
-  total_tests_midpoint6_df,
-  glue("output/{test}/proxy_null/total_tests_midpoint6_{test}.csv")
+  total_tests_mp6_df,
+  glue("output/{test}/proxy_null/total_tests_mp6_{test}.csv")
 )
 
 

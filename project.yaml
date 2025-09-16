@@ -23,7 +23,7 @@ actions:
     outputs:
       moderately_sensitive:
         dataset: output/alt/proxy_null/top_1000_*_alt.csv
-        totals: output/alt/proxy_null/total_tests_midpoint6_alt.csv
+        totals: output/alt/proxy_null/total_tests_mp6_alt.csv
   generate_value_histogram_alt:
     run: >
       r:latest analysis/proxy_null_analysis/generate_histogram.r 
@@ -113,7 +113,7 @@ actions:
     outputs:
       moderately_sensitive:
         dataset: output/chol/proxy_null/top_1000_*_chol.csv
-        totals: output/chol/proxy_null/total_tests_midpoint6_chol.csv
+        totals: output/chol/proxy_null/total_tests_mp6_chol.csv
   generate_value_histogram_chol:
     run: >
       r:latest analysis/proxy_null_analysis/generate_histogram.r 
@@ -203,7 +203,7 @@ actions:
     outputs:
       moderately_sensitive:
         dataset: output/hba1c/proxy_null/top_1000_*_hba1c.csv
-        totals: output/hba1c/proxy_null/total_tests_midpoint6_hba1c.csv
+        totals: output/hba1c/proxy_null/total_tests_mp6_hba1c.csv
   generate_value_histogram_hba1c:
     run: >
       r:latest analysis/proxy_null_analysis/generate_histogram.r 
@@ -293,7 +293,7 @@ actions:
     outputs:
       moderately_sensitive:
         dataset: output/rbc/proxy_null/top_1000_*_rbc.csv
-        totals: output/rbc/proxy_null/total_tests_midpoint6_rbc.csv
+        totals: output/rbc/proxy_null/total_tests_mp6_rbc.csv
   generate_value_histogram_rbc:
     run: >
       r:latest analysis/proxy_null_analysis/generate_histogram.r 
@@ -383,7 +383,7 @@ actions:
     outputs:
       moderately_sensitive:
         dataset: output/sodium/proxy_null/top_1000_*_sodium.csv
-        totals: output/sodium/proxy_null/total_tests_midpoint6_sodium.csv
+        totals: output/sodium/proxy_null/total_tests_mp6_sodium.csv
   generate_value_histogram_sodium:
     run: >
       r:latest analysis/proxy_null_analysis/generate_histogram.r 
@@ -473,7 +473,7 @@ actions:
     outputs:
       moderately_sensitive:
         dataset: output/hba1c_numeric/proxy_null/top_1000_*_hba1c_numeric.csv
-        totals: output/hba1c_numeric/proxy_null/total_tests_midpoint6_hba1c_numeric.csv
+        totals: output/hba1c_numeric/proxy_null/total_tests_mp6_hba1c_numeric.csv
   generate_value_histogram_hba1c_numeric:
     run: >
       r:latest analysis/proxy_null_analysis/generate_histogram.r 
@@ -563,7 +563,7 @@ actions:
     outputs:
       moderately_sensitive:
         dataset: output/vitd/proxy_null/top_1000_*_vitd.csv
-        totals: output/vitd/proxy_null/total_tests_midpoint6_vitd.csv
+        totals: output/vitd/proxy_null/total_tests_mp6_vitd.csv
   generate_value_histogram_vitd:
     run: >
       r:latest analysis/proxy_null_analysis/generate_histogram.r 
@@ -653,7 +653,7 @@ actions:
     outputs:
       moderately_sensitive:
         dataset: output/psa/proxy_null/top_1000_*_psa.csv
-        totals: output/psa/proxy_null/total_tests_midpoint6_psa.csv
+        totals: output/psa/proxy_null/total_tests_mp6_psa.csv
   generate_value_histogram_psa:
     run: >
       r:latest analysis/proxy_null_analysis/generate_histogram.r 
@@ -743,7 +743,7 @@ actions:
     outputs:
       moderately_sensitive:
         dataset: output/alt_numeric/proxy_null/top_1000_*_alt_numeric.csv
-        totals: output/alt_numeric/proxy_null/total_tests_midpoint6_alt_numeric.csv
+        totals: output/alt_numeric/proxy_null/total_tests_mp6_alt_numeric.csv
   generate_value_histogram_alt_numeric:
     run: >
       r:latest analysis/proxy_null_analysis/generate_histogram.r 
@@ -835,3 +835,14 @@ actions:
     outputs:
       highly_sensitive:
         dataset: output/test_dataset.csv
+  generate_test_value_dataset:
+    run: >
+        ehrql:v1 generate-dataset
+          analysis/proxy_null_analysis/value_dataset_definition.py
+          --output output/test_value_dataset.csv
+          --test-data-file analysis/proxy_null_analysis/test_value_dataset_definition.py
+          --
+          --codelist codelists/opensafely-alanine-aminotransferase-alt-tests.csv
+    outputs:
+      highly_sensitive:
+        dataset: output/test_value_dataset.csv

@@ -2,7 +2,7 @@
 # Args: --codelist [codelist]
 
 import argparse
-from ehrql import codelist_from_csv
+from ehrql import codelist_from_csv, years
 from ehrql.tables.core import patients
 from ehrql.tables.tpp import (
     practice_registrations as registrations,
@@ -15,7 +15,7 @@ parser = argparse.ArgumentParser()
 parser.add_argument("--codelist")
 args = parser.parse_args()
 start_date = "2018-01-01"
-end_date = "2024-01-01"
+end_date = start_date + years(7)
 
 # Codelists
 # --------------------------------------------------------------------------------------
@@ -29,7 +29,10 @@ codelist_events = clinical_events_ranges.where(
 )
 
 # Extract numeric values for codelist
-dataset.codelist_event_count = codelist_events.exists_for_patient()
+dataset.codelist_event_count = codelist_events.count_for_patient()
+dataset.zero_count = codelist_events.sort_by(codelist_events.date).where(codelist_events.numeric_value == 0).count_for_patient()
+
+dataset.codelist_event_exists = codelist_events.exists_for_patient()
 dataset.numeric_value = codelist_events.sort_by(codelist_events.date).first_for_patient().numeric_value
 dataset.upper_bound = codelist_events.sort_by(codelist_events.date).first_for_patient().upper_bound
 dataset.lower_bound = codelist_events.sort_by(codelist_events.date).first_for_patient().lower_bound

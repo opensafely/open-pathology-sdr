@@ -58,7 +58,7 @@ yaml_body_template = """
     outputs:
       moderately_sensitive:
         dataset: output/{test}/proxy_null/top_1000_*_{test}.csv
-        totals: output/{test}/proxy_null/total_tests_midpoint6_{test}.csv
+        totals: output/{test}/proxy_null/total_tests_mp6_{test}.csv
   generate_value_histogram_{test}:
     run: >
       r:latest analysis/proxy_null_analysis/generate_histogram.r 
@@ -114,6 +114,17 @@ yaml_summary = '''
     outputs:
       highly_sensitive:
         dataset: output/test_dataset.csv
+  generate_test_value_dataset:
+    run: >
+        ehrql:v1 generate-dataset
+          analysis/proxy_null_analysis/value_dataset_definition.py
+          --output output/test_value_dataset.csv
+          --test-data-file analysis/proxy_null_analysis/test_value_dataset_definition.py
+          --
+          --codelist codelists/opensafely-alanine-aminotransferase-alt-tests.csv
+    outputs:
+      highly_sensitive:
+        dataset: output/test_value_dataset.csv
 '''
 yaml = yaml_header + yaml_body + yaml_summary
 with open("project.yaml", "w") as file:
