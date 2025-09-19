@@ -30,8 +30,6 @@ codelist_events = clinical_events_ranges.where(
 
 # Extract numeric values for codelist
 dataset.codelist_event_count = codelist_events.count_for_patient()
-dataset.zero_count = codelist_events.sort_by(codelist_events.date).where(codelist_events.numeric_value == 0).count_for_patient()
-
 dataset.codelist_event_exists = codelist_events.exists_for_patient()
 dataset.numeric_value = codelist_events.sort_by(codelist_events.date).first_for_patient().numeric_value
 dataset.upper_bound = codelist_events.sort_by(codelist_events.date).first_for_patient().upper_bound

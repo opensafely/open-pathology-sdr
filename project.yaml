@@ -93,6 +93,18 @@ actions:
       moderately_sensitive:
         measures: output/measures_alt_has_upper_bound.csv
 
+  generate_measures_alt_has_zero_value:
+    run: >
+      ehrql:v1 generate-measures
+        analysis/measure_definition.py
+        --output output/measures_alt_has_zero_value.csv
+        --
+        --codelist codelists/opensafely-alanine-aminotransferase-alt-tests.csv
+        --measure has_zero_value
+    outputs:
+      moderately_sensitive:
+        measures: output/measures_alt_has_zero_value.csv
+
 # ----------------- Test: chol ---------------------------------
 
   generate_value_dataset_chol:
@@ -182,6 +194,18 @@ actions:
     outputs:
       moderately_sensitive:
         measures: output/measures_chol_has_upper_bound.csv
+
+  generate_measures_chol_has_zero_value:
+    run: >
+      ehrql:v1 generate-measures
+        analysis/measure_definition.py
+        --output output/measures_chol_has_zero_value.csv
+        --
+        --codelist codelists/opensafely-cholesterol-tests.csv
+        --measure has_zero_value
+    outputs:
+      moderately_sensitive:
+        measures: output/measures_chol_has_zero_value.csv
 
 # ----------------- Test: hba1c ---------------------------------
 
@@ -273,6 +297,18 @@ actions:
       moderately_sensitive:
         measures: output/measures_hba1c_has_upper_bound.csv
 
+  generate_measures_hba1c_has_zero_value:
+    run: >
+      ehrql:v1 generate-measures
+        analysis/measure_definition.py
+        --output output/measures_hba1c_has_zero_value.csv
+        --
+        --codelist codelists/opensafely-glycated-haemoglobin-hba1c-tests.csv
+        --measure has_zero_value
+    outputs:
+      moderately_sensitive:
+        measures: output/measures_hba1c_has_zero_value.csv
+
 # ----------------- Test: rbc ---------------------------------
 
   generate_value_dataset_rbc:
@@ -362,6 +398,18 @@ actions:
     outputs:
       moderately_sensitive:
         measures: output/measures_rbc_has_upper_bound.csv
+
+  generate_measures_rbc_has_zero_value:
+    run: >
+      ehrql:v1 generate-measures
+        analysis/measure_definition.py
+        --output output/measures_rbc_has_zero_value.csv
+        --
+        --codelist codelists/opensafely-red-blood-cell-rbc-tests.csv
+        --measure has_zero_value
+    outputs:
+      moderately_sensitive:
+        measures: output/measures_rbc_has_zero_value.csv
 
 # ----------------- Test: sodium ---------------------------------
 
@@ -453,6 +501,18 @@ actions:
       moderately_sensitive:
         measures: output/measures_sodium_has_upper_bound.csv
 
+  generate_measures_sodium_has_zero_value:
+    run: >
+      ehrql:v1 generate-measures
+        analysis/measure_definition.py
+        --output output/measures_sodium_has_zero_value.csv
+        --
+        --codelist codelists/opensafely-sodium-tests-numerical-value.csv
+        --measure has_zero_value
+    outputs:
+      moderately_sensitive:
+        measures: output/measures_sodium_has_zero_value.csv
+
 # ----------------- Test: hba1c_numeric ---------------------------------
 
   generate_value_dataset_hba1c_numeric:
@@ -542,6 +602,18 @@ actions:
     outputs:
       moderately_sensitive:
         measures: output/measures_hba1c_numeric_has_upper_bound.csv
+
+  generate_measures_hba1c_numeric_has_zero_value:
+    run: >
+      ehrql:v1 generate-measures
+        analysis/measure_definition.py
+        --output output/measures_hba1c_numeric_has_zero_value.csv
+        --
+        --codelist codelists/opensafely-glycated-haemoglobin-hba1c-tests-numerical-value.csv
+        --measure has_zero_value
+    outputs:
+      moderately_sensitive:
+        measures: output/measures_hba1c_numeric_has_zero_value.csv
 
 # ----------------- Test: vitd ---------------------------------
 
@@ -633,6 +705,18 @@ actions:
       moderately_sensitive:
         measures: output/measures_vitd_has_upper_bound.csv
 
+  generate_measures_vitd_has_zero_value:
+    run: >
+      ehrql:v1 generate-measures
+        analysis/measure_definition.py
+        --output output/measures_vitd_has_zero_value.csv
+        --
+        --codelist codelists/ardens-vitamin-d-level.csv
+        --measure has_zero_value
+    outputs:
+      moderately_sensitive:
+        measures: output/measures_vitd_has_zero_value.csv
+
 # ----------------- Test: psa ---------------------------------
 
   generate_value_dataset_psa:
@@ -723,6 +807,18 @@ actions:
       moderately_sensitive:
         measures: output/measures_psa_has_upper_bound.csv
 
+  generate_measures_psa_has_zero_value:
+    run: >
+      ehrql:v1 generate-measures
+        analysis/measure_definition.py
+        --output output/measures_psa_has_zero_value.csv
+        --
+        --codelist codelists/opensafely-psa-numeric-value.csv
+        --measure has_zero_value
+    outputs:
+      moderately_sensitive:
+        measures: output/measures_psa_has_zero_value.csv
+
 # ----------------- Test: alt_numeric ---------------------------------
 
   generate_value_dataset_alt_numeric:
@@ -812,6 +908,18 @@ actions:
     outputs:
       moderately_sensitive:
         measures: output/measures_alt_numeric_has_upper_bound.csv
+
+  generate_measures_alt_numeric_has_zero_value:
+    run: >
+      ehrql:v1 generate-measures
+        analysis/measure_definition.py
+        --output output/measures_alt_numeric_has_zero_value.csv
+        --
+        --codelist codelists/opensafely-alanine-aminotransferase-alt-tests-numerical-value.csv
+        --measure has_zero_value
+    outputs:
+      moderately_sensitive:
+        measures: output/measures_alt_numeric_has_zero_value.csv
 
   # Summarise data
   generate_value_summary:
