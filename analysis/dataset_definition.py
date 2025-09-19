@@ -35,7 +35,9 @@ has_test_value = ((ranges.numeric_value.is_not_null()) & (ranges.numeric_value !
 #has_differential_comparator = ranges.comparator.is_not_null() & ~has_equality_comparator
 #has_upper_bound = ranges.upper_bound.is_not_null()
 #has_lower_bound = ranges.lower_bound.is_not_null()
+has_zero_value = ranges.numeric_value == 0
 
 dataset.has_test_value = codelist_events.where(has_test_value).count_for_patient()
+dataset.has_zero_value = codelist_events.where(has_zero_value).count_for_patient()
 dataset.define_population(patients.exists_for_patient())
 

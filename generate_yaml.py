@@ -83,7 +83,7 @@ codelists = {'alt': 'codelists/opensafely-alanine-aminotransferase-alt-tests.csv
              'alt_numeric': 'codelists/opensafely-alanine-aminotransferase-alt-tests-numerical-value.csv'}
 
 measures = ['has_test_value', 'has_equality_comparator', 'has_differential_comparator',
-            'has_lower_bound', 'has_upper_bound']
+            'has_lower_bound', 'has_upper_bound', 'has_zero_value']
 
 for test, path in codelists.items():
     yaml_body += yaml_body_template.format(test = test, path = path)

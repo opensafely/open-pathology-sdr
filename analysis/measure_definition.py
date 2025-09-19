@@ -23,16 +23,26 @@ region = registrations.for_patient_on(INTERVAL.start_date).practice_nuts1_region
 codelist_event_count = codelist_events.count_for_patient()
 
 # Booleans testing for presence of each field in clinical_events_ranges
-if args.measure == "has_test_value":
-    # Dont consider null and 0's as completed tests
-    query = (clinical_events.numeric_value.is_not_null()) & (
-        clinical_events.numeric_value != 0
-    )
-    # Use clinical_events instead of clinical_events_ranges for codelist_events
+if (args.measure == "has_test_value") | (args.measure == "has_zero_value"):
+
+    # Use clinical_events instead of clinical_events_ranges if measure only needs test value field
+    # because it is a faster table
     codelist_events = clinical_events.where(
         clinical_events.snomedct_code.is_in(codelist)
         & clinical_events.date.is_during(INTERVAL)
     )
+
+    if args.measure == "has_test_value":
+
+        # Dont consider null and 0's as completed tests
+        query = (clinical_events.numeric_value.is_not_null()) & (
+            clinical_events.numeric_value != 0
+        )
+
+    elif args.measure == "has_zero_value":
+
+        query = (clinical_events.numeric_value == 0)
+    
 elif args.measure == "has_equality_comparator":
     query = ranges.comparator.is_in(["=", "~"])
 elif args.measure == "has_differential_comparator":
