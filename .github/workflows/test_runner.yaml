@@ -16,4 +16,4 @@ jobs:
     - name: Test that the project is runnable
       uses: opensafely-core/research-action@v2
       with:
-        actions: generate_measures_alt_has_zero_value generate_measures_chol_has_zero_value generate_measures_sodium_has_zero_value generate_measures_rbc_has_zero_value generate_measures_hba1c_has_zero_value generate_measures_hb1ac_numeric_has_zero_value
+        actions: generate_measures_alt_has_zero_value generate_measures_chol_has_zero_value generate_measures_sodium_has_zero_value generate_measures_rbc_has_zero_value generate_measures_hba1c_has_zero_value generate_measures_hba1c_numeric_has_zero_value
