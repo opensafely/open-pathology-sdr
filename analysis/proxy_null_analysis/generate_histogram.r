@@ -1,3 +1,7 @@
+# USAGE: Rscript analysis/proxy_null_analysis/generate_histogram.r
+# Options
+# --test [alt OR hba1c OR chol etc]
+
 library(ggplot2)
 library(dplyr)
 library(scales)
@@ -14,12 +18,13 @@ pseudonyms <- c(
 # Helper: load, transform, and summarise data
 process_field <- function(test, field) {
   top_1000 <- read.csv(glue("output/output/{test}/proxy_null/top_1000_{field}_{test}.csv"))
-  top_1000$propn_midpoint6 <- (top_1000$count_midpoint6 / sum(top_1000$count_midpoint6)) * 100
+  total_tests <- read.csv(glue("output/output/{test}/proxy_null/total_tests_mp6_{test}.csv"))
+  top_1000$propn_mp6 <- (top_1000$count_mp6 / unique(total_tests$total_tests_exists_mp6)) * 100
   top_1000$value <- round(top_1000$value)
 
   aggregated <- top_1000 %>%
     group_by(value) %>%
-    summarise(total_propn_midpoint6_derived = sum(propn_midpoint6), .groups = "drop") %>%
+    summarise(total_propn_mp6_derived = sum(propn_mp6), .groups = "drop") %>%
     mutate(
       test = test,
       field = field,
@@ -29,7 +34,6 @@ process_field <- function(test, field) {
         gsub("_", " ", field)
       )
     )
-
   aggregated
 }
 
@@ -49,7 +53,6 @@ for (test in tests) {
     df_list[[paste(test, field, sep = "_")]] <- process_field(test, field)
   }
 }
-
 combined_df <- bind_rows(df_list)
 
 # Set facet order: "Test Value" first
@@ -64,7 +67,7 @@ if (opt$test == "hba1c_numeric") {
 }
 
 # Plot
-p <- ggplot(combined_df, aes(x = value, y = total_propn_midpoint6_derived)) +
+p <- ggplot(combined_df, aes(x = value, y = total_propn_mp6_derived)) +
   geom_bar(stat = "identity", fill = "lightblue", color = "black", alpha = 0.7) +
   scale_y_continuous(labels = label_comma()) +
   labs(
