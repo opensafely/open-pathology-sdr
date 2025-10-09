@@ -63,20 +63,22 @@ combined_df$field_formatted <- factor(
 
 # Set test facet order for hba1c_numeric
 if (opt$test == "hba1c_numeric") {
-  combined_df$test <- factor(combined_df$test, levels = c("hba1c_numeric", "hba1c"))
+  combined_df$test <- factor(combined_df$test, levels = c("hba1c", "hba1c_numeric"))
 }
 
+combined_df <- combined_df %>%
+  mutate(test = recode(test,
+    "hba1c" = "HbA1c Full",
+    "hba1c_numeric" = "HbA1c Simplified"
+  ))
+print(combined_df)
 # Plot
 p <- ggplot(combined_df, aes(x = value, y = total_propn_mp6_derived)) +
   geom_bar(stat = "identity", fill = "lightblue", color = "black", alpha = 0.7) +
   scale_y_continuous(labels = label_comma()) +
+  theme(text = element_text(size = 15)) +
   labs(
-    title = if (opt$test == "hba1c_numeric") {
-      "Histogram of 1000 Most Common Values"
-    } else {
-      glue("Histogram of 1000 Most Common Values for {opt$test}")
-    },
-    x = "Value",
+    x = "Test Result",
     y = "Proportion"
   ) +
   {

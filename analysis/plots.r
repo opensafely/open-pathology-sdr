@@ -87,7 +87,8 @@ for (measure in measures){
       legend.background = element_rect(fill = alpha("white", 0.8), color = "grey80"),
       legend.box.background = element_rect(color = "grey50"),
       legend.title = element_text(face = "bold"),
-      axis.title.x = element_blank()
+      axis.title.x = element_blank(),
+      text = element_text(size = 15)
     ) +
     guides(color = guide_legend(nrow = 3))
 
