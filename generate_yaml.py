@@ -98,7 +98,7 @@ yaml_summary = '''
         python:latest python analysis/proxy_null_analysis/summary_stats.py 
       needs: [generate_value_dataset_alt, generate_value_dataset_chol, 
                 generate_value_dataset_rbc, generate_value_dataset_hba1c_numeric, 
-                generate_value_dataset_hba1c, generate_value_dataset_sodium]
+                generate_value_dataset_hba1c, generate_value_dataset_sodium, generate_value_dataset_alt_numeric]
       outputs:
         moderately_sensitive:
           dataset: output/*/proxy_null/value_summary*.csv
