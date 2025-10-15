@@ -48,7 +48,7 @@ elif args.measure == "has_equality_comparator":
 elif args.measure == "has_differential_comparator":
     query = ranges.comparator.is_in([">=", ">", "<", "<="])
 elif args.measure == "has_lower_bound":
-    query = (ranges.lower_bound.is_not_null()) & (ranges.lower_bound > 0)
+    query = (ranges.lower_bound.is_not_null())
 elif args.measure == "has_upper_bound":
     query = (ranges.upper_bound.is_not_null()) & (ranges.upper_bound > 0)
 
