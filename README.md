@@ -16,6 +16,23 @@ with a focus on public accountability and research quality.
 
 Read more at [OpenSAFELY.org](https://opensafely.org).
 
+# Project Pipeline
+
+**Main Measures**
+1. Generate measures with `measure_definition.py`
+2. Release measures from Airlock
+3. Process raw measures into results tables with `format_results.py`
+4. Generate bivariate (regions with time) line plots from results tables using `plots.r`
+5. Process results tables into univariate tables using external google sheets document
+6. Generate univariate (region or time) line/heatmap plots from univariate tables using `univariate_plots.r`
+
+**Sentinel Values**
+1. Extract dataset with `numeric_value_dataset_definition.py`
+2. Generate summary stats from dataset with `summary_stats.py`
+3. Extract top 1000 values from dataset with `generate_freq_table.r`
+4. Generate histogram from top 1000 values with `generate_histogram.r`
+Configure codelists in `config.r`
+
 # Licences
 
 As standard, research projects have a MIT license.
