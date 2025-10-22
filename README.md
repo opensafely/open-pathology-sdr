@@ -22,15 +22,16 @@ Read more at [OpenSAFELY.org](https://opensafely.org).
 1. Generate measures with `measure_definition.py`
 2. Release measures from Airlock
 3. Process raw measures into results tables with `format_results.py`
-4. Generate bivariate (regions with time) line plots from results tables using `plots.r`
-5. Process results tables into univariate tables using external google sheets document
-6. Generate univariate (region or time) line/heatmap plots from univariate tables using `univariate_plots.r`
+4. Generate bivariate (regions with time) line plots from results tables using `plots.r`. Also generates wide-format results table
+5. Process wide-format results tables into univariate tables using external google sheets document
+6. Generate univariate (region or time) line/heatmap plots from univariate tables using `univariate_plots.r`. **Note - The heatmap isn't working on codespaces because the 'sf' package isn't loading for some reason, running a copy of the script locally is the current workaround**
 
 **Sentinel Values**
 1. Extract dataset with `numeric_value_dataset_definition.py`
 2. Generate summary stats from dataset with `summary_stats.py`
 3. Extract top 1000 values from dataset with `generate_freq_table.r`
-4. Generate histogram from top 1000 values with `generate_histogram.r`
+4. Release summary stats and top 1000 values from airlock
+5. Generate histogram from top 1000 values with `generate_histogram.r`
 Configure codelists in `config.r`
 
 # Licences

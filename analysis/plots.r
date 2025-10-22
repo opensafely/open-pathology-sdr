@@ -50,7 +50,7 @@ df_long <- pivot_longer(
     "numerator_has_differential_comparator", "numerator_has_equality_comparator",
     "numerator_has_lower_bound", "numerator_has_upper_bound",
     "numerator_has_test_value",
-    "denominator_test_value", "denominator_bounds", "denominator_comparators"
+    "denominator_test_value", "denominator_lower_bound", "denominator_upper_bound", "denominator_comparators"
   ),
   names_to = "field_name",
   values_to = "value"

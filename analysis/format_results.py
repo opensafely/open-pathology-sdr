@@ -25,16 +25,14 @@ for measure in measures:
     # Select only needed columns
     cols_to_keep = ['measure', 'interval_start', 'numerator', 'denominator', 'region']
     measures_dict[measure] = df[cols_to_keep]
-
+    
 # ======================
 # 2. Group into blocks
 # ======================
 
 df_test_value = measures_dict['test_value'].copy()
-df_bounds = pd.concat([
-    measures_dict['lower_bound'],
-    measures_dict['upper_bound']
-], ignore_index=True)
+df_lower_bound = measures_dict['lower_bound'].copy()
+df_upper_bound = measures_dict['upper_bound'].copy()
 df_comparators = pd.concat([
     measures_dict['differential_comparator'],
     measures_dict['equality_comparator']
@@ -56,23 +54,33 @@ def pivot_block(df, denom_name):
     return wide.reset_index()
 
 final_test_value = pivot_block(df_test_value, 'denominator_test_value')
-final_bounds = pivot_block(df_bounds, 'denominator_bounds')
+final_lower_bound = pivot_block(df_lower_bound, 'denominator_lower_bound')
+final_upper_bound = pivot_block(df_upper_bound, 'denominator_upper_bound')
 final_comparators = pivot_block(df_comparators, 'denominator_comparators')
 
 # ======================
 # 4. Calculate rates
 # ======================
 
+# Test value
 for measure in ['test_value']:
     final_test_value[f'rate_{measure}'] = (
         final_test_value[f'numerator_has_{measure}'] / final_test_value['denominator_test_value'] * 100
     )
 
-for measure in ['lower_bound', 'upper_bound']:
-    final_bounds[f'rate_{measure}'] = (
-        final_bounds[f'numerator_has_{measure}'] / final_bounds['denominator_bounds'] * 100
+# Lower bound
+for measure in ['lower_bound']:
+    final_lower_bound[f'rate_{measure}'] = (
+        final_lower_bound[f'numerator_has_{measure}'] / final_lower_bound['denominator_lower_bound'] * 100
     )
 
+# Upper bound
+for measure in ['upper_bound']:
+    final_upper_bound[f'rate_{measure}'] = (
+        final_upper_bound[f'numerator_has_{measure}'] / final_upper_bound['denominator_upper_bound'] * 100
+    )
+
+# Comparators
 for measure in ['differential_comparator', 'equality_comparator']:
     final_comparators[f'rate_{measure}'] = (
         final_comparators[f'numerator_has_{measure}'] / final_comparators['denominator_comparators'] * 100
@@ -82,10 +90,11 @@ for measure in ['differential_comparator', 'equality_comparator']:
 # 5. Merge into one table
 # ======================
 
-results_df = final_test_value.merge(
-    final_bounds, on=['interval_start', 'region'], how='outer'
-).merge(
-    final_comparators, on=['interval_start', 'region'], how='outer'
+results_df = (
+    final_test_value
+    .merge(final_lower_bound, on=['interval_start', 'region'], how='outer')
+    .merge(final_upper_bound, on=['interval_start', 'region'], how='outer')
+    .merge(final_comparators, on=['interval_start', 'region'], how='outer')
 )
 
 # ======================
