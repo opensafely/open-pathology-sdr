@@ -6,7 +6,7 @@ library(dplyr)
 library(tidyr)
 library(ggplot2)
 
-df <- read.csv("output/output/OP SDR results table - Sheet5.csv")
+df <- read.csv("output/output/OP SDR results table - Region csv.csv")
 
 # # Load shapefile
 # uk_regions <- st_read("output/output/NUTS_Level_1_January_2018_GCB_in_the_United_Kingdom_2022_-2753267915301604886.geojson")
@@ -51,7 +51,7 @@ df <- read.csv("output/output/OP SDR results table - Sheet5.csv")
 
 # ------------- Time plot ----------------------------
 
-df <- read.csv("output/output/OP SDR results table - Interval csv")
+df <- read.csv("output/output/OP SDR results table - Interval csv.csv")
 
 # Pivot longer so each test is in its own row
 df_long <- df %>%
@@ -61,22 +61,32 @@ df_long <- df %>%
     values_to = "Value"
   ) %>%
   mutate(Interval = as.Date(Interval))   # ensure date type
-print(df_long)
-# Facet plot over time
+
+# Define the desired order
+desired_order <- c("Test Value", "Upper Bound", "Lower Bound", "Equality Comparator", "Differential Comparator")
+
+df_long <- df_long %>%
+  mutate(
+    Field.name = factor(Field.name, levels = desired_order)
+  )
+
+# Plot
 p <- ggplot(df_long, aes(x = Interval, y = Value, color = Test)) +
   geom_line(size = 1) +
   geom_point(size = 2) +
   facet_wrap(~Field.name) +
-  scale_y_continuous(limits = c(0, 100)) +  # sets y-axis 0-100 for all facets
+  scale_y_continuous(limits = c(0, 100)) +
   labs(
     x = NULL,
     y = "Non-null %",
     color = NULL
   ) +
   theme(
-    axis.text.x = element_text(angle = 45, hjust = 1), # angled dates for readability
+    axis.text.x = element_text(angle = 45, hjust = 1),
     text = element_text(size = 15)
   )
+
+print(p)
 
 # Save plot
 ggsave("output/output/time_facet_plot.png", plot = p, width = 12, height = 8, dpi = 300)
