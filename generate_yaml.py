@@ -102,6 +102,13 @@ yaml_summary = '''
       outputs:
         moderately_sensitive:
           dataset: output/*/proxy_null/value_summary*.csv
+  generate_patient_counts:
+      run: >
+        python:latest python analysis/count_patients.py 
+      needs: [generate_value_dataset_alt, generate_measures_alt_has_test_value]
+      outputs:
+        moderately_sensitive:
+          dataset: output/patient_counts.csv
   # Runs test to ensure correctness of measures queries
   generate_test_dataset:
     run: >
