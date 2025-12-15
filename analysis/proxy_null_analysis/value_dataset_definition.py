@@ -6,7 +6,7 @@ from ehrql import codelist_from_csv, years
 from ehrql.tables.core import patients
 from ehrql.tables.tpp import (
     practice_registrations as registrations,
-    clinical_events_ranges
+    clinical_events_ranges,
 )
 from ehrql import create_dataset
 
@@ -31,9 +31,15 @@ codelist_events = clinical_events_ranges.where(
 # Extract numeric values for codelist
 dataset.codelist_event_count = codelist_events.count_for_patient()
 dataset.codelist_event_exists = codelist_events.exists_for_patient()
-dataset.numeric_value = codelist_events.sort_by(codelist_events.date).first_for_patient().numeric_value
-dataset.upper_bound = codelist_events.sort_by(codelist_events.date).first_for_patient().upper_bound
-dataset.lower_bound = codelist_events.sort_by(codelist_events.date).first_for_patient().lower_bound
+dataset.numeric_value = (
+    codelist_events.sort_by(codelist_events.date).first_for_patient().numeric_value
+)
+dataset.upper_bound = (
+    codelist_events.sort_by(codelist_events.date).first_for_patient().upper_bound
+)
+dataset.lower_bound = (
+    codelist_events.sort_by(codelist_events.date).first_for_patient().lower_bound
+)
 
 dataset.configure_dummy_data(population_size=1000)
 dataset.define_population(patients.exists_for_patient())
