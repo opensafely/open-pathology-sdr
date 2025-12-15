@@ -41,14 +41,14 @@ if (args.measure == "has_test_value") | (args.measure == "has_zero_value"):
 
     elif args.measure == "has_zero_value":
 
-        query = (clinical_events.numeric_value == 0)
-    
+        query = clinical_events.numeric_value == 0
+
 elif args.measure == "has_equality_comparator":
     query = ranges.comparator.is_in(["=", "~"])
 elif args.measure == "has_differential_comparator":
     query = ranges.comparator.is_in([">=", ">", "<", "<="])
 elif args.measure == "has_lower_bound":
-    query = (ranges.lower_bound.is_not_null())
+    query = ranges.lower_bound.is_not_null()
 elif args.measure == "has_upper_bound":
     query = (ranges.upper_bound.is_not_null()) & (ranges.upper_bound > 0)
 

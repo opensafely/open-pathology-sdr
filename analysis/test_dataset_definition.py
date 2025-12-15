@@ -22,14 +22,8 @@ test_data = {
                 "comparator": "~",
             },
         ],
-        "patients": {
-
-        },
+        "patients": {},
         "expected_in_population": True,
-        "expected_columns": {
-            "has_test_value": 1,
-            "has_zero_value": 1
-        },
+        "expected_columns": {"has_test_value": 1, "has_zero_value": 1},
     }
 }
-

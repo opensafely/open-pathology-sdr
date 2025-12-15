@@ -1,8 +1,8 @@
 from datetime import date
 
-from analysis.proxy_null_analysis.value_dataset_definition import dataset  
+from analysis.proxy_null_analysis.value_dataset_definition import dataset
 
-test_data = { #tests alt
+test_data = {  # tests alt
     1: {
         "clinical_events_ranges": [
             {
@@ -22,9 +22,7 @@ test_data = { #tests alt
                 "comparator": "~",
             },
         ],
-        "patients": {
-
-        },
+        "patients": {},
         "expected_in_population": True,
         "expected_columns": {
             "zero_count": 1,
@@ -32,8 +30,7 @@ test_data = { #tests alt
             "codelist_event_exists": 1,
             "numeric_value": 34,
             "upper_bound": 76,
-            "lower_bound": 0
+            "lower_bound": 0,
         },
     }
 }
-
