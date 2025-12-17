@@ -19,21 +19,43 @@ pseudonyms <- c(
 process_field <- function(test, field) {
   top_1000 <- read.csv(glue("output/output/{test}/proxy_null/top_1000_{field}_{test}.csv"))
   total_tests <- read.csv(glue("output/output/{test}/proxy_null/total_tests_mp6_{test}.csv"))
-  top_1000$propn_mp6 <- (top_1000$count_mp6 / unique(total_tests$total_tests_exists_mp6)) * 100
+  # Read summary with first column as row names so we can index by statistic name
+  summary_stats <- read.csv(glue("output/output/{test}/proxy_null/value_summary_{test}.csv"), row.names = 1)
+
+  # Extract number of non-null tests for field (ensure numeric)
+  n_tests <- as.numeric(summary_stats["count", 'numeric_value'])
+  top_1000$propn_mp6 <- (top_1000$count_mp6 / n_tests) * 100
   top_1000$value <- round(top_1000$value)
 
-  aggregated <- top_1000 %>%
-    group_by(value) %>%
-    summarise(total_propn_mp6_derived = sum(propn_mp6), .groups = "drop") %>%
-    mutate(
-      test = test,
-      field = field,
-      field_formatted = ifelse(
-        field %in% names(pseudonyms),
-        pseudonyms[field],
-        gsub("_", " ", field)
+  if (test == "hba1c_numeric") {
+    aggregated <- top_1000 %>%
+          group_by(value) %>%
+          summarise(total_propn_mp6_derived = sum(propn_mp6), .groups = "drop") %>%
+          mutate(
+            test = glue("{test}, n = {n_tests}"),
+            field = field,
+            field_formatted = ifelse(
+              field %in% names(pseudonyms),
+                pseudonyms[field],
+                gsub("_", " ", field)
+              ),
+            n_tests = n_tests
+          )
+  } else{
+    aggregated <- top_1000 %>%
+      group_by(value) %>%
+      summarise(total_propn_mp6_derived = sum(propn_mp6), .groups = "drop") %>%
+      mutate(
+        test = test,
+        field = field,
+        field_formatted = ifelse(
+          field %in% names(pseudonyms),
+          glue("{pseudonyms[field]}, n = {n_tests}"),
+          gsub("_", " ", field)
+        ),
+        n_tests = n_tests
       )
-    )
+  }
   aggregated
 }
 
@@ -54,16 +76,29 @@ for (test in tests) {
   }
 }
 combined_df <- bind_rows(df_list)
+print(combined_df)
 
 # Set facet order: "Test Value" first
-combined_df$field_formatted <- factor(
-  combined_df$field_formatted,
-  levels = c("Test Value", "Upper Bound", "Lower Bound")
-)
-
-# Set test facet order for hba1c_numeric
 if (opt$test == "hba1c_numeric") {
-  combined_df$test <- factor(combined_df$test, levels = c("hba1c", "hba1c_numeric"))
+  combined_df$field_formatted <- factor(
+    combined_df$field_formatted,
+    levels = unique(c(
+      "Test Value",
+      "Upper Bound",
+      "Lower Bound"
+    ))
+  )
+} else {
+  # using grep "^" to search for labels beginning with the field name
+  # Use `value = TRUE` so `grep` returns the matching label strings rather than their indices
+  combined_df$field_formatted <- factor(
+    combined_df$field_formatted,
+    levels = unique(c(
+      grep("^Test Value", combined_df$field_formatted, value = TRUE),
+      grep("^Upper Bound", combined_df$field_formatted, value = TRUE),
+      grep("^Lower Bound", combined_df$field_formatted, value = TRUE)
+    ))
+  )
 }
 
 combined_df <- combined_df %>%
