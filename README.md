@@ -1,5 +1,24 @@
 # open-pathology-sdr
 
+# Pipeline
+
+- There are two pipelines for distinct sets of data:
+   1. Completeness measures
+   2. Proxy null analysis dataset
+
+**Completeness measures**
+1. Extract measures using `generate_measures_{test}_{measure}` (runs `measure_definition.py`), where test = {alt, cholesterol, hba1c etc.} and measure = {has_test_value, has_lower_bound etc.}
+
+**Proxy null analysis dataset**
+1. Extract dataset using `generate_value_dataset_{test}` (runs `proxy_null_analysis/value_dataset_definition.py`), where test = {alt, cholesterol, hba1c etc.}
+2. Generate frequency table of 1000 most common test and reference range values and total number of tests using `generate_value_table_{test}` (runs `analysis/proxy_null_analysis/generate_freq_table.r`)
+3. Generate a histogram of the top 1000 most common test and reference range values using `generate_value_histogram_{test}` (runs `analysis/proxy_null_analysis/generate_histogram.r`)
+4. Generate summary statistics of the extracted test/reference range values using `generate_value_summary` (runs `analysis/proxy_null_analysis/summary_stats.py`)
+
+Additionally, total patient counts for both sets of data are generate using `generate_patient_counts` (runs `analysis/count_patients.py`).
+
+# Notes
+
 [View on OpenSAFELY](https://jobs.opensafely.org/repo/https%253A%252F%252Fgithub.com%252Fopensafely%252Fopen-pathology-sdr)
 
 Details of the purpose and any published outputs from this project can be found at the link above.

@@ -22,7 +22,6 @@ if (is.null(opt$test)) {
 } else if (opt$test == 'hba1c_numeric') {
     codelist <- 'codelist/opensafely/glycated-haemoglobin-hba1c-tests-numerical-value.csv'
 }
-
 if (opt$test_run){
     test <- 'alt'
     codelist <- 'codelists/opensafely-alanine-aminotransferase-alt-tests.csv'

@@ -8,23 +8,66 @@ roundmid_any <- function(x, to=6){
   ceiling(x/to)*to - (floor(to/2)*(x!=0))
 }
 
-measures <- read.csv(glue('output/{opt$test}/proxy_null/numeric_value_dataset_{opt$test}.csv'))
+measures <- read.csv(glue('output/{test}/proxy_null/value_dataset_{test}.csv'))
 
 #--------- Create frequency table -------------------------------------------------
 
-freq_table <- as.data.frame(table(measures$numeric_value))
-# Rename columns for clarity
-colnames(freq_table) <- c("numeric_value", "count")
-# Convert numeric_value back to numeric (since table makes it a factor)
-freq_table$numeric_value <- as.numeric(as.character(freq_table$numeric_value))
-colnames(freq_table) <- c("value", "count")  # Rename columns for clarity
-# Sort and extract top 1000
-top_1000 <- freq_table %>%
-  arrange(desc(count)) %>%
-  slice_head(n = 1000)
-# Apply midpoint 6 rounding
-top_1000$count <- roundmid_any(top_1000$count)
-top_1000 <- rename(top_1000, count_midpoint6 = count)
+fields <- c("numeric_value", "lower_bound", "upper_bound")
+total_tests_mp6_list <- list() 
 
-write.csv(top_1000, glue("output/{opt$test}/proxy_null/top_1000_numeric_values_{opt$test}.csv"), row.names = FALSE)
+for (field in fields) {
+
+  # Select relevant columns
+  measures_sub <- select(measures, codelist_event_count, codelist_event_exists, all_of(field))
+
+  # Extract total number of tests in time period
+  total_tests_exists <- sum(measures_sub$codelist_event_exists, na.rm = TRUE)
+  total_tests_exists_mp6 <- roundmid_any(total_tests_exists)
+
+  total_tests_count <- sum(measures_sub$codelist_event_count, na.rm = TRUE)
+  total_tests_count_mp6 <- roundmid_any(total_tests_count)
+
+  total_tests_zero <- sum(measures_sub$zero_count, na.rm = TRUE)
+  total_tests_zero_mp6 <- roundmid_any(total_tests_zero)
+
+  # Add total to table
+  total_tests_mp6_list[[length(total_tests_mp6_list) + 1]] <- tibble(
+    test = test,
+    field = field,
+    total_tests_exists_mp6 = total_tests_exists_mp6,
+    total_tests_count_mp6 = total_tests_count_mp6,
+    total_tests_zero_mp6 = total_tests_zero_mp6
+  )
+
+  # Generate frequency per value table
+  freq_table <- as.data.frame(table(measures_sub[[field]]))
+  colnames(freq_table) <- c("value", "count")
+  freq_table$value <- as.numeric(as.character(freq_table$value))
+
+  # Extract 1000 most common values
+  top_1000 <- freq_table %>%
+    arrange(desc(count)) %>%
+    slice_head(n = 1000) %>%
+    mutate(
+      count_mp6 = roundmid_any(count),
+      propn_mp6 = ((count_mp6 / total_tests_exists_mp6)*100)
+    ) %>%
+    select(value, count_mp6, propn_mp6)
+
+  # Save top 1000 table per field
+  write.csv(
+    top_1000,
+    glue("output/{test}/proxy_null/top_1000_{field}_{test}.csv"),
+    row.names = FALSE
+  )
+}
+
+# Combine all totals into one table and write it
+total_tests_mp6_df <- bind_rows(total_tests_mp6_list)
+
+write_csv(
+  total_tests_mp6_df,
+  glue("output/{test}/proxy_null/total_tests_mp6_{test}.csv")
+)
+
 

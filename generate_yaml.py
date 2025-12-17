@@ -40,39 +40,40 @@ yaml_measure_template = """
 yaml_body_template = """
 # ----------------- Test: {test} ---------------------------------
 
-  generate_numeric_value_dataset_{test}:
+  generate_value_dataset_{test}:
     run: >
       ehrql:v1 generate-dataset
-        analysis/proxy_null_analysis/numeric_value_dataset_definition.py
-        --output output/{test}/proxy_null/numeric_value_dataset_{test}.csv
+        analysis/proxy_null_analysis/value_dataset_definition.py
+        --output output/{test}/proxy_null/value_dataset_{test}.csv
         --
         --codelist {path}
     outputs:
       highly_sensitive:
-        dataset: output/{test}/proxy_null/numeric_value_dataset_{test}.csv
-  generate_numeric_value_table_{test}:
+        dataset: output/{test}/proxy_null/value_dataset_{test}.csv
+  generate_value_table_{test}:
     run: >
       r:latest analysis/proxy_null_analysis/generate_freq_table.r 
       --codelist {path}
-    needs: [generate_numeric_value_dataset_{test}]
+    needs: [generate_value_dataset_{test}]
     outputs:
       moderately_sensitive:
         dataset: output/{test}/proxy_null/top_1000_numeric_values_{test}.csv
-  # generate_numeric_value_histogram_{test}:
-  #   run: >
-  #     r:latest analysis/proxy_null_analysis/generate_histogram.r 
-  #     --codelist {path}
-  #   outputs:
-  #     moderately_sensitive:
-  #       pic: output/output/{test}/proxy_null/numeric_values_{test}.png
-  #       pic2: output/output/{test}/proxy_null/numeric_values_zoomed_{test}.png
-  # generate_numeric_value_summary_{test}:
-  #   run: >
-  #     r:latest analysis/proxy_null_analysis/summary_stats.r
-  #   needs: [generate_numeric_value_dataset_{test}]
-  #   outputs:
-  #     moderately_sensitive:
-  #       table: output/{test}/proxy_null/numeric_value_summary_{test}.csv
+  generate_numeric_value_histogram_{test}:
+    run: >
+      r:latest analysis/proxy_null_analysis/generate_histogram.r 
+      --codelist {path}
+    needs: [generate_numeric_value_table_{test}]
+    outputs:
+      moderately_sensitive:
+        pic: output/{test}/proxy_null/numeric_values_{test}.png
+        pic2: output/{test}/proxy_null/numeric_values_zoomed_{test}.png
+  #generate_numeric_value_summary_{test}:
+  #  run: >
+  #    python:latest analysis/proxy_null_analysis/summary_stats.py
+  #  needs: [generate_numeric_value_dataset_{test}]
+  #  outputs:
+  #    moderately_sensitive:
+  #      table: output/{test}/proxy_null/numeric_value_summary_{test}.csv
 """
 
 yaml_body = ""
@@ -81,9 +82,15 @@ codelists = {'alt': 'codelists/opensafely-alanine-aminotransferase-alt-tests.csv
              'chol': 'codelists/opensafely-cholesterol-tests.csv',
              'hba1c': 'codelists/opensafely-glycated-haemoglobin-hba1c-tests.csv', 
              'rbc': 'codelists/opensafely-red-blood-cell-rbc-tests.csv', 
-             'sodium': 'codelists/opensafely-sodium-tests-numerical-value.csv'}
+             'sodium': 'codelists/opensafely-sodium-tests-numerical-value.csv',
+             # New measures
+             'hba1c_numeric': 'codelists/opensafely-glycated-haemoglobin-hba1c-tests-numerical-value.csv',
+             'vitd': 'codelists/ardens-vitamin-d-level.csv',
+             'psa': 'codelists/opensafely-psa-numeric-value.csv',
+             'alt_numeric': 'codelists/opensafely-alanine-aminotransferase-alt-tests-numerical-value.csv'}
+
 measures = ['has_test_value', 'has_equality_comparator', 'has_differential_comparator',
-            'has_lower_bound', 'has_upper_bound']
+            'has_lower_bound', 'has_upper_bound', 'has_zero_value']
 
 for test, path in codelists.items():
     yaml_body += yaml_body_template.format(test = test, path = path)
@@ -91,7 +98,24 @@ for test, path in codelists.items():
         yaml_body += yaml_measure_template.format(test = test, codelist_path = path, measure = measure)
 
 # ---- YAML TESTS ------
-yaml_test = '''
+yaml_summary = '''
+  # Summarise data
+  generate_value_summary:
+      run: >
+        python:latest python analysis/proxy_null_analysis/summary_stats.py 
+      needs: [generate_value_dataset_alt, generate_value_dataset_chol, 
+                generate_value_dataset_rbc, generate_value_dataset_hba1c_numeric, 
+                generate_value_dataset_hba1c, generate_value_dataset_sodium, generate_value_dataset_alt_numeric]
+      outputs:
+        moderately_sensitive:
+          dataset: output/*/proxy_null/value_summary*.csv
+  generate_patient_counts:
+      run: >
+        python:latest python analysis/count_patients.py 
+      needs: [generate_value_dataset_alt]
+      outputs:
+        moderately_sensitive:
+          dataset: output/alt/proxy_null/patient_counts.csv
   # Runs test to ensure correctness of measures queries
   generate_test_dataset:
     run: >
@@ -104,7 +128,18 @@ yaml_test = '''
     outputs:
       highly_sensitive:
         dataset: output/test_dataset.csv
+  generate_test_value_dataset:
+    run: >
+        ehrql:v1 generate-dataset
+          analysis/proxy_null_analysis/value_dataset_definition.py
+          --output output/test_value_dataset.csv
+          --test-data-file analysis/proxy_null_analysis/test_value_dataset_definition.py
+          --
+          --codelist codelists/opensafely-alanine-aminotransferase-alt-tests.csv
+    outputs:
+      highly_sensitive:
+        dataset: output/test_value_dataset.csv
 '''
-yaml = yaml_header + yaml_body + yaml_test
+yaml = yaml_header + yaml_body + yaml_summary
 with open("project.yaml", "w") as file:
        file.write(yaml)
