@@ -68,8 +68,8 @@ if (opt$test == "hba1c_numeric") {
 
 combined_df <- combined_df %>%
   mutate(test = recode(test,
-    "hba1c" = "HbA1c Full",
-    "hba1c_numeric" = "HbA1c Simplified"
+    "hba1c" = "HbA1c DCCT & IFCC",
+    "hba1c_numeric" = "HbA1c IFCC"
   ))
 print(combined_df)
 # Plot
