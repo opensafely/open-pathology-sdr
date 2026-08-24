@@ -52,7 +52,7 @@ yaml_body_template = """
         dataset: output/{test}/proxy_null/value_dataset_{test}.csv
   generate_value_table_{test}:
     run: >
-      r:latest analysis/proxy_null_analysis/generate_freq_table.r 
+      r:v2 analysis/proxy_null_analysis/generate_freq_table.r 
       --codelist {path}
     needs: [generate_value_dataset_{test}]
     outputs:
@@ -61,7 +61,7 @@ yaml_body_template = """
         totals: output/{test}/proxy_null/total_tests_mp6_{test}.csv
   generate_value_histogram_{test}:
     run: >
-      r:latest analysis/proxy_null_analysis/generate_histogram.r 
+      r:v2 analysis/proxy_null_analysis/generate_histogram.r 
       --codelist {path}
     needs: [generate_value_table_{test}]
     outputs:
@@ -95,7 +95,7 @@ yaml_summary = '''
   # Summarise data
   generate_value_summary:
       run: >
-        python:latest python analysis/proxy_null_analysis/summary_stats.py 
+        python:v2 python analysis/proxy_null_analysis/summary_stats.py 
       needs: [generate_value_dataset_alt, generate_value_dataset_chol, 
                 generate_value_dataset_rbc, generate_value_dataset_hba1c_numeric, 
                 generate_value_dataset_hba1c, generate_value_dataset_sodium, generate_value_dataset_alt_numeric]
@@ -104,7 +104,7 @@ yaml_summary = '''
           dataset: output/*/proxy_null/value_summary*.csv
   generate_patient_counts:
       run: >
-        python:latest python analysis/count_patients.py 
+        python:v2 python analysis/count_patients.py 
       needs: [generate_value_dataset_alt]
       outputs:
         moderately_sensitive:

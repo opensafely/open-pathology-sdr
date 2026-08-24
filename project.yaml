@@ -17,7 +17,7 @@ actions:
         dataset: output/alt/proxy_null/value_dataset_alt.csv
   generate_value_table_alt:
     run: >
-      r:latest analysis/proxy_null_analysis/generate_freq_table.r 
+      r:v2 analysis/proxy_null_analysis/generate_freq_table.r 
       --codelist codelists/opensafely-alanine-aminotransferase-alt-tests.csv
     needs: [generate_value_dataset_alt]
     outputs:
@@ -26,7 +26,7 @@ actions:
         totals: output/alt/proxy_null/total_tests_mp6_alt.csv
   generate_value_histogram_alt:
     run: >
-      r:latest analysis/proxy_null_analysis/generate_histogram.r 
+      r:v2 analysis/proxy_null_analysis/generate_histogram.r 
       --codelist codelists/opensafely-alanine-aminotransferase-alt-tests.csv
     needs: [generate_value_table_alt]
     outputs:
@@ -119,7 +119,7 @@ actions:
         dataset: output/chol/proxy_null/value_dataset_chol.csv
   generate_value_table_chol:
     run: >
-      r:latest analysis/proxy_null_analysis/generate_freq_table.r 
+      r:v2 analysis/proxy_null_analysis/generate_freq_table.r 
       --codelist codelists/opensafely-cholesterol-tests.csv
     needs: [generate_value_dataset_chol]
     outputs:
@@ -128,7 +128,7 @@ actions:
         totals: output/chol/proxy_null/total_tests_mp6_chol.csv
   generate_value_histogram_chol:
     run: >
-      r:latest analysis/proxy_null_analysis/generate_histogram.r 
+      r:v2 analysis/proxy_null_analysis/generate_histogram.r 
       --codelist codelists/opensafely-cholesterol-tests.csv
     needs: [generate_value_table_chol]
     outputs:
@@ -221,7 +221,7 @@ actions:
         dataset: output/hba1c/proxy_null/value_dataset_hba1c.csv
   generate_value_table_hba1c:
     run: >
-      r:latest analysis/proxy_null_analysis/generate_freq_table.r 
+      r:v2 analysis/proxy_null_analysis/generate_freq_table.r 
       --codelist codelists/opensafely-glycated-haemoglobin-hba1c-tests.csv
     needs: [generate_value_dataset_hba1c]
     outputs:
@@ -230,7 +230,7 @@ actions:
         totals: output/hba1c/proxy_null/total_tests_mp6_hba1c.csv
   generate_value_histogram_hba1c:
     run: >
-      r:latest analysis/proxy_null_analysis/generate_histogram.r 
+      r:v2 analysis/proxy_null_analysis/generate_histogram.r 
       --codelist codelists/opensafely-glycated-haemoglobin-hba1c-tests.csv
     needs: [generate_value_table_hba1c]
     outputs:
@@ -323,7 +323,7 @@ actions:
         dataset: output/rbc/proxy_null/value_dataset_rbc.csv
   generate_value_table_rbc:
     run: >
-      r:latest analysis/proxy_null_analysis/generate_freq_table.r 
+      r:v2 analysis/proxy_null_analysis/generate_freq_table.r 
       --codelist codelists/opensafely-red-blood-cell-rbc-tests.csv
     needs: [generate_value_dataset_rbc]
     outputs:
@@ -332,7 +332,7 @@ actions:
         totals: output/rbc/proxy_null/total_tests_mp6_rbc.csv
   generate_value_histogram_rbc:
     run: >
-      r:latest analysis/proxy_null_analysis/generate_histogram.r 
+      r:v2 analysis/proxy_null_analysis/generate_histogram.r 
       --codelist codelists/opensafely-red-blood-cell-rbc-tests.csv
     needs: [generate_value_table_rbc]
     outputs:
@@ -425,7 +425,7 @@ actions:
         dataset: output/sodium/proxy_null/value_dataset_sodium.csv
   generate_value_table_sodium:
     run: >
-      r:latest analysis/proxy_null_analysis/generate_freq_table.r 
+      r:v2 analysis/proxy_null_analysis/generate_freq_table.r 
       --codelist codelists/opensafely-sodium-tests-numerical-value.csv
     needs: [generate_value_dataset_sodium]
     outputs:
@@ -434,7 +434,7 @@ actions:
         totals: output/sodium/proxy_null/total_tests_mp6_sodium.csv
   generate_value_histogram_sodium:
     run: >
-      r:latest analysis/proxy_null_analysis/generate_histogram.r 
+      r:v2 analysis/proxy_null_analysis/generate_histogram.r 
       --codelist codelists/opensafely-sodium-tests-numerical-value.csv
     needs: [generate_value_table_sodium]
     outputs:
@@ -527,7 +527,7 @@ actions:
         dataset: output/hba1c_numeric/proxy_null/value_dataset_hba1c_numeric.csv
   generate_value_table_hba1c_numeric:
     run: >
-      r:latest analysis/proxy_null_analysis/generate_freq_table.r 
+      r:v2 analysis/proxy_null_analysis/generate_freq_table.r 
       --codelist codelists/opensafely-glycated-haemoglobin-hba1c-tests-numerical-value.csv
     needs: [generate_value_dataset_hba1c_numeric]
     outputs:
@@ -536,7 +536,7 @@ actions:
         totals: output/hba1c_numeric/proxy_null/total_tests_mp6_hba1c_numeric.csv
   generate_value_histogram_hba1c_numeric:
     run: >
-      r:latest analysis/proxy_null_analysis/generate_histogram.r 
+      r:v2 analysis/proxy_null_analysis/generate_histogram.r 
       --codelist codelists/opensafely-glycated-haemoglobin-hba1c-tests-numerical-value.csv
     needs: [generate_value_table_hba1c_numeric]
     outputs:
@@ -629,7 +629,7 @@ actions:
         dataset: output/vitd/proxy_null/value_dataset_vitd.csv
   generate_value_table_vitd:
     run: >
-      r:latest analysis/proxy_null_analysis/generate_freq_table.r 
+      r:v2 analysis/proxy_null_analysis/generate_freq_table.r 
       --codelist codelists/ardens-vitamin-d-level.csv
     needs: [generate_value_dataset_vitd]
     outputs:
@@ -638,7 +638,7 @@ actions:
         totals: output/vitd/proxy_null/total_tests_mp6_vitd.csv
   generate_value_histogram_vitd:
     run: >
-      r:latest analysis/proxy_null_analysis/generate_histogram.r 
+      r:v2 analysis/proxy_null_analysis/generate_histogram.r 
       --codelist codelists/ardens-vitamin-d-level.csv
     needs: [generate_value_table_vitd]
     outputs:
@@ -731,7 +731,7 @@ actions:
         dataset: output/psa/proxy_null/value_dataset_psa.csv
   generate_value_table_psa:
     run: >
-      r:latest analysis/proxy_null_analysis/generate_freq_table.r 
+      r:v2 analysis/proxy_null_analysis/generate_freq_table.r 
       --codelist codelists/opensafely-psa-numeric-value.csv
     needs: [generate_value_dataset_psa]
     outputs:
@@ -740,7 +740,7 @@ actions:
         totals: output/psa/proxy_null/total_tests_mp6_psa.csv
   generate_value_histogram_psa:
     run: >
-      r:latest analysis/proxy_null_analysis/generate_histogram.r 
+      r:v2 analysis/proxy_null_analysis/generate_histogram.r 
       --codelist codelists/opensafely-psa-numeric-value.csv
     needs: [generate_value_table_psa]
     outputs:
@@ -833,7 +833,7 @@ actions:
         dataset: output/alt_numeric/proxy_null/value_dataset_alt_numeric.csv
   generate_value_table_alt_numeric:
     run: >
-      r:latest analysis/proxy_null_analysis/generate_freq_table.r 
+      r:v2 analysis/proxy_null_analysis/generate_freq_table.r 
       --codelist codelists/opensafely-alanine-aminotransferase-alt-tests-numerical-value.csv
     needs: [generate_value_dataset_alt_numeric]
     outputs:
@@ -842,7 +842,7 @@ actions:
         totals: output/alt_numeric/proxy_null/total_tests_mp6_alt_numeric.csv
   generate_value_histogram_alt_numeric:
     run: >
-      r:latest analysis/proxy_null_analysis/generate_histogram.r 
+      r:v2 analysis/proxy_null_analysis/generate_histogram.r 
       --codelist codelists/opensafely-alanine-aminotransferase-alt-tests-numerical-value.csv
     needs: [generate_value_table_alt_numeric]
     outputs:
@@ -924,7 +924,7 @@ actions:
   # Summarise data
   generate_value_summary:
       run: >
-        python:latest python analysis/proxy_null_analysis/summary_stats.py 
+        python:v2 python analysis/proxy_null_analysis/summary_stats.py 
       needs: [generate_value_dataset_alt, generate_value_dataset_chol, 
                 generate_value_dataset_rbc, generate_value_dataset_hba1c_numeric, 
                 generate_value_dataset_hba1c, generate_value_dataset_sodium, generate_value_dataset_alt_numeric]
@@ -933,7 +933,7 @@ actions:
           dataset: output/*/proxy_null/value_summary*.csv
   generate_patient_counts:
       run: >
-        python:latest python analysis/count_patients.py 
+        python:v2 python analysis/count_patients.py 
       needs: [generate_value_dataset_alt]
       outputs:
         moderately_sensitive:
